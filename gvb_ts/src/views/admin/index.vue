@@ -43,9 +43,7 @@
 <!--        面包屑区域-->
         <div class="gvb_head_breadcrumbs">
           <a-breadcrumb>
-            <a-breadcrumb-item>Home</a-breadcrumb-item>
-            <a-breadcrumb-item>Channel</a-breadcrumb-item>
-            <a-breadcrumb-item>News</a-breadcrumb-item>
+            <a-breadcrumb-item v-for="item in route.matched">{{(item.meta as MetaType).title}}</a-breadcrumb-item>
           </a-breadcrumb>
         </div>
 <!--        右侧功能区-->
@@ -98,7 +96,7 @@ import {
   IconBug,
   IconBulb, IconUser,
 } from '@arco-design/web-vue/es/icon';
-import {useRoute,useRouter} from "vue-router";
+import {type RouteMeta, useRoute, useRouter} from "vue-router";
 import {type Component, ref, watch} from "vue";
 interface MenuType{
   key:string,
@@ -106,6 +104,9 @@ interface MenuType{
   icon?:Component,
   name?:string,
   child?:MenuType[]
+}
+interface MetaType extends RouteMeta{
+  title:string
 }
 const route = useRoute();
 const router = useRouter();
