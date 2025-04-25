@@ -1,6 +1,8 @@
 <template>
   <div class="gvb_tabs">
-    <div :class="{gvb_tab:true, active:item.name === route.name}" v-for="item in tabList" :key="item.name">
+    <div :class="{gvb_tab:true, active:item.name === route.name}" v-for="item in tabList"
+         @click="clickTab(item)"
+         :key="item.name">
       {{item.title}}
       <IconClose v-if="item.name !== 'home'"/>
     </div>
@@ -9,11 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {ref, type Ref} from "vue";
+import {useRoute,useRouter} from "vue-router";
+import {ref, type Ref, watch} from "vue";
 import {IconClose} from "@arco-design/web-vue/es/icon";
 
 const route = useRoute()
+const router = useRouter()
 interface tabType{
   name:string
   title:string
@@ -22,6 +25,27 @@ const  tabList:Ref<tabType[]> = ref([
   {name:'home',title:'首页'},
   {name:'user_info',title:'我的信息'}
 ])
+/* tab点击事件 */
+const clickTab = (item:tabType) => {
+  router.push({
+    name:item.name
+  })
+}
+/* 判断路由是否在tabs中已经存在 @return: true:已存在 false: 未存在 */
+const inList = (name:string)=>{
+  for (const item of tabList.value){
+    if (item.name === name){
+      return true
+    }
+  }
+  return false
+}
+/* 监听路由的变化 @options:immediate 页面刚打开时加载 */
+watch(() => route.name,()=>{
+  if (!inList(route.name as string)){
+    tabList.value.push({name:route.name as string,title:route.meta.title as string})
+  }
+},{immediate:true})
 </script>
 
 <style lang="scss" scoped>
