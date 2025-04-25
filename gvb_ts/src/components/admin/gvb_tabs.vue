@@ -72,6 +72,29 @@ const closeAllTabClick = () =>{
   ]
   router.push({name:'home'})
 }
+/* tabs持久化 */
+const tabsPersistence = () =>{
+  localStorage.setItem('tabList', JSON.stringify(tabList.value))
+}
+/* 监听tabs的变化 */
+watch(()=>tabList.value.length,()=>{
+  tabsPersistence()
+})
+/* 页面刚打开时加载 */
+const loadTabs = () =>{
+  let val = localStorage.getItem('tabList')
+  if (val === null){
+    return
+  }
+  let tabs = []
+  try {
+    tabs = JSON.parse(val)
+  }catch(err){
+    return;
+  }
+  tabList.value = tabs;
+}
+loadTabs()
 </script>
 
 <style lang="scss" scoped>
