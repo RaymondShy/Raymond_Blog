@@ -4,9 +4,9 @@
          @click="clickTab(item)"
          :key="item.name">
       {{item.title}}
-      <IconClose v-if="item.name !== 'home'"/>
+      <IconClose @click.stop="closeClick(item)" v-if="item.name !== 'home'"/>
     </div>
-    <div class="gvb_tab close_all_tab">全部关闭</div>
+    <div class="gvb_tab close_all_tab" @click="closeAllTabClick">全部关闭</div>
   </div>
 </template>
 
@@ -44,8 +44,34 @@ const inList = (name:string)=>{
 watch(() => route.name,()=>{
   if (!inList(route.name as string)){
     tabList.value.push({name:route.name as string,title:route.meta.title as string})
+    console.log(tabList.value)
   }
 },{immediate:true})
+/* 关闭一个tab */
+const closeClick = (item:tabType)=>{
+  console.log(tabList.value)
+  // 如果为home不关
+  if (item.name === 'home'){
+    return
+  }
+  // 找到tab在当前列表中的索引
+  let index = tabList.value.findIndex((tab)=> item.name === tab.name )
+  console.log(index)
+  tabList.value.splice(index,1)
+  // 判断当前删除的tab和当前页面的路由是否一致
+  if (route.name === item.name){
+    let beforeIndex = index - 1;
+    let beforeItem = tabList.value[beforeIndex];
+    clickTab(beforeItem);
+  }
+}
+/* 关闭所有tabs */
+const closeAllTabClick = () =>{
+  tabList.value = [
+    {name:'home',title:'首页'}
+  ]
+  router.push({name:'home'})
+}
 </script>
 
 <style lang="scss" scoped>
