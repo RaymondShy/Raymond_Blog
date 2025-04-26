@@ -1,4 +1,7 @@
-:root{
+ body{
     --bg:#f0eeee;
     --active: #165dff;
+}
+body[arco-theme='dark'] {
+    --bg:#464646;
 }
