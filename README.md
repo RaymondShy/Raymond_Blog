@@ -1,231 +1,211 @@
-# Raymond Blog Web TypeScript
+# Raymond Blog - Vue 3 + TypeScript + Vite
 
-一个基于 Vue 3 + TypeScript + Vite 构建的现代化前端项目，提供完整的博客系统和管理后台功能。
+A modern frontend project built with Vue 3, TypeScript, and Vite, providing a complete blog system with admin panel functionality.
 
-## 项目概述
+## Project Overview
 
-本项目是一个功能完整的博客系统，包含前台展示和后台管理两个主要部分。系统采用现代化的技术栈，提供流畅的用户体验和强大的管理功能。
+This project is a fully-featured blog system consisting of two main parts: a frontend display and an admin backend. The system utilizes modern technology stack to deliver a smooth user experience and powerful management capabilities.
 
-### 主要功能
+### Key Features
 
-- 📝 文章管理
-    - 文章发布、编辑、删除
-    - Markdown 编辑器支持
-    - 文章分类和标签管理
-    - 文章评论系统
-    - 文章搜索功能
-- 👥 用户系统
-    - 用户注册和登录
-    - 用户角色管理
-    - 个人中心
-    - 消息通知
-- 💬 社交功能
-    - 评论系统
-    - 群聊功能
-    - 用户互动
-- 📊 数据统计
-    - 访问统计
-    - 用户行为分析
-    - 数据可视化展示
-- ⚙️ 系统管理
-    - 系统配置
-    - 日志管理
-    - 权限控制
-    - 菜单管理
+- 📝 Article Management
+    - Article publishing, editing, and deletion
+    - Markdown editor support
+    - Article categorization and tagging
+    - Comment system
+    - Article search functionality
+- 👥 User System
+    - User registration and login
+    - Role management
+    - Personal profile center
+    - Notification system
+- 💬 Social Features
+    - Comment system
+    - Group chat functionality
+    - User interactions
+- 📊 Data Statistics
+    - Visitor analytics
+    - User behavior analysis
+    - Data visualization
+- ⚙️ System Administration
+    - System configuration
+    - Log management
+    - Permission control
+    - Menu management
 
+## Technology Stack
 
-## 技术栈
+### Core Frameworks
 
-### 核心框架
+- Vue 3 - Progressive JavaScript framework
+- TypeScript - Typed superset of JavaScript
+- Vite - Next-generation frontend build tool
 
-- Vue 3 - 渐进式 JavaScript 框架
-- TypeScript - JavaScript 的超集，提供类型系统
-- Vite - 下一代前端构建工具
+### State Management & Routing
 
+- Pinia - State management library for Vue
+- Vue Router - Official router for Vue.js
 
-### 状态管理与路由
+### UI Components & Styling
 
-- Pinia - Vue 的状态管理库
-- Vue Router - Vue.js 的官方路由管理器
+- Arco Design Vue - Vue 3 component library by ByteDance
+- SASS - CSS preprocessor
+- Font Awesome - Icon library
 
+### Data Visualization & Editors
 
-### UI 组件与样式
+- ECharts - Powerful charting library
+- MD Editor V3 - Markdown editor component
 
-- Arco Design Vue - 字节跳动出品的 Vue 3 组件库
-- SASS - CSS 预处理器
-- Font Awesome - 图标库
+### Utility Libraries
 
+- Axios - Promise-based HTTP client
+- MockJS - Data mocking tool
+- Day.js - Lightweight date library
+- NProgress - Progress bar component
 
-### 数据可视化与编辑器
-
-- ECharts - 功能强大的图表库
-- MD Editor V3 - Markdown 编辑器组件
-
-
-### 工具库
-
-- Axios - 基于 Promise 的 HTTP 客户端
-- MockJS - 数据模拟工具
-- Day.js - 轻量级日期处理库
-- NProgress - 进度条组件
-
-
-## 项目结构
+## Project Structure
 
 ```plain
 src/
-├── api/                # API 接口定义
-│   ├── article_api.ts  # 文章相关接口
-│   ├── user_api.ts     # 用户相关接口
-│   ├── chat_api.ts     # 聊天相关接口
+├── api/                # API definitions
+│   ├── article_api.ts  # Article-related APIs
+│   ├── user_api.ts     # User-related APIs
+│   ├── chat_api.ts     # Chat-related APIs
 │   └── ...
-├── assets/            # 静态资源
-│   ├── theme.css      # 主题样式
-│   └── base.css       # 基础样式
-├── components/        # 公共组件
-├── global/           # 全局配置
-├── lib/              # 第三方库配置
-├── router/           # 路由配置
-├── service/          # 服务层
-├── stores/           # Pinia 状态管理
-├── types/            # TypeScript 类型定义
-├── utils/            # 工具函数
-├── views/            # 页面视图组件
-│   ├── admin/        # 管理后台页面
-│   ├── login/        # 登录相关页面
-│   └── web/          # 前台展示页面
-└── main.ts           # 应用入口文件
+├── assets/            # Static assets
+│   ├── theme.css      # Theme styles
+│   └── base.css       # Base styles
+├── components/        # Shared components
+├── global/           # Global configurations
+├── lib/              # Third-party library configs
+├── router/           # Routing configurations
+├── service/          # Service layer
+├── stores/           # Pinia state management
+├── types/            # TypeScript type definitions
+├── utils/            # Utility functions
+├── views/            # Page view components
+│   ├── admin/        # Admin panel pages
+│   ├── login/        # Login-related pages
+│   └── web/          # Frontend pages
+└── main.ts           # Application entry file
 ```
 
-## 快速开始
+## Getting Started
 
-### 环境要求
+### Prerequisites
 
 - Node.js >= 18
-- npm 或 yarn 或 pnpm
-- 现代浏览器（Chrome >= 87, Firefox >= 78, Safari >= 14, Edge >= 88）
+- npm or yarn or pnpm
+- Modern browser (Chrome >= 87, Firefox >= 78, Safari >= 14, Edge >= 88)
 
+### Installation
 
-### 安装步骤
-
-1. 克隆项目
-
+1. Clone the repository
 
 ```plain
-git clone [项目地址]
+git clone [repository-url]
 cd gvb-web-ts
 ```
 
-1. 安装依赖
-
+2. Install dependencies
 
 ```plain
 npm install
-# 或
+# or
 yarn install
-# 或
+# or
 pnpm install
 ```
 
-1. 配置环境变量
-
+3. Configure environment variables
 
 ```plain
 cp .env.example .env
-# 编辑 .env 文件，配置必要的环境变量
+# Edit .env file with necessary configurations
 ```
 
-1. 启动开发服务器
-
+4. Start development server
 
 ```plain
 npm run dev
-# 或
+# or
 yarn dev
-# 或
+# or
 pnpm dev
 ```
 
-### 构建部署
+### Build & Deployment
 
-1. 构建生产版本
-
+1. Build for production
 
 ```plain
 npm run build
-# 或
+# or
 yarn build
-# 或
+# or
 pnpm build
 ```
 
-1. 预览生产构建
-
+2. Preview production build
 
 ```plain
 npm run preview
-# 或
+# or
 yarn preview
-# 或
+# or
 pnpm preview
 ```
 
-## 开发指南
+## Development Guide
 
-### 代码规范
+### Code Standards
 
-- 使用 TypeScript 编写代码，确保类型安全
-- 遵循 Vue 3 组合式 API 的最佳实践
-- 使用 ESLint 和 Prettier 进行代码格式化
-- 组件命名采用 PascalCase
-- 文件命名采用 kebab-case
+- Use TypeScript for type safety
+- Follow Vue 3 Composition API best practices
+- Apply ESLint and Prettier for code formatting
+- Use PascalCase for component names
+- Use kebab-case for file names
 
+### Directory Structure
 
-### 目录规范
+- Components in `components` directory
+- Pages in `views` directory
+- API definitions in `api` directory
+- Utility functions in `utils` directory
+- Type definitions in `types` directory
 
-- 组件文件放在 `components` 目录下
-- 页面文件放在 `views` 目录下
-- API 接口定义放在 `api` 目录下
-- 工具函数放在 `utils` 目录下
-- 类型定义放在 `types` 目录下
+### State Management
 
+- Use Pinia for state management
+- Organize stores by feature modules
+- Follow actions/state/getters pattern
 
-### 状态管理
+### Routing
 
-- 使用 Pinia 进行状态管理
-- 按功能模块划分 store
-- 遵循 actions、state、getters 的组织方式
+- Use Vue Router for navigation
+- Organize routes by modules
+- Implement lazy loading
+- Configure route guards for authentication
 
+## Deployment
 
-### 路由管理
-
-- 使用 Vue Router 进行路由管理
-- 路由配置按模块划分
-- 实现路由懒加载
-- 配置路由守卫进行权限控制
-
-
-## 部署说明
-
-### 生产环境要求
+### Production Requirements
 
 - Node.js >= 18
-- Nginx 或其他 Web 服务器
-- 支持 HTTPS
-- 配置适当的缓存策略
+- Nginx or other web server
+- HTTPS support
+- Proper caching strategy
 
+### Deployment Steps
 
-### 部署步骤
-
-1. 构建项目
-
+1. Build the project
 
 ```plain
 npm run build
 ```
 
-1. 配置 Nginx
-
+2. Configure Nginx
 
 ```plain
 server {
@@ -238,7 +218,7 @@ server {
         try_files $uri $uri/ /index.html;
     }
     
-    # API 代理配置
+    # API proxy configuration
     location /api {
         proxy_pass http://your-api-server;
         proxy_set_header Host $host;
@@ -247,26 +227,24 @@ server {
 }
 ```
 
-1. 启动服务
-
+3. Start production server
 
 ```plain
-# 使用 PM2 启动服务
+# Using PM2
 pm2 start npm --name "gvb-web" -- run start
 ```
 
-## 浏览器兼容性
+## Browser Compatibility
 
 - Chrome >= 87
 - Firefox >= 78
 - Safari >= 14
 - Edge >= 88
 
+## Contribution Guide
 
-## 贡献指南
-
-1. Fork 项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
