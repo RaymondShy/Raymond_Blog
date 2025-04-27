@@ -6,6 +6,6 @@ export interface loginEmailType {
     password: string
 }
 
-export function loginEmailApi(request: loginEmailType): Promise<baseResponse<string>> {
-    return useAxios.post("/api/email_login")
+export function loginPwdApi(request: loginEmailType): Promise<baseResponse<string>> {
+    return useAxios.post("/api/login/pwd", request)
 }

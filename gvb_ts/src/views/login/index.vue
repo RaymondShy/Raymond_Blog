@@ -5,7 +5,7 @@
         <div class="gvb_login_form_title">欢迎来到Codecify</div>
         <div class="gvb_login_form_subtitle">开启您的技术博客之旅</div>
 
-        <a-form-item field="user_name" label="用户名"
+        <a-form-item field="userName" label="用户名"
                      :rules="[{required:true,message:'请输入用户名'}]"
                      :validate-trigger="['blur']"
         >
@@ -32,7 +32,7 @@
           <a-link>忘记密码?</a-link>
         </div>
 
-        <a-button type="primary" long size="large" class="login-btn">
+        <a-button type="primary" long size="large" class="login-btn" @click="loginPwdClick">
           登录
         </a-button>
 
@@ -57,9 +57,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import {reactive, ref} from "vue";
 import { IconUser, IconLock } from "@arco-design/web-vue/es/icon";
+import {loginPwdApi} from "@/api/user_api.ts";
+import {Message} from "@arco-design/web-vue";
+import {useRouter} from "vue-router";
+import {useCounterStore} from "@/stores/counter.ts";
 
+const router = useRouter()
+const store = useCounterStore()
 const form = reactive({
   userName: "",
   password: ""
@@ -72,6 +78,24 @@ const socialIcons = [
   { name: "Gmail", src: "/image/gmail.png" },
   { name: "GitHub", src: "/image/github.png" }
 ];
+const formRef = ref()
+// 用户名密码登录
+const loginPwdClick = async () =>{
+  console.log(form.userName);
+  let val = await formRef.value.validate()
+  if (val) {
+    console.log(val);
+    return
+  }
+   let res = await loginPwdApi(form)
+  if (res.code !== 200){
+    Message.error(res.msg)
+    return
+  }
+  Message.success(res.msg)
+  store.setToken(res.data)
+  router.push("/admin")
+}
 </script>
 
 <style lang="scss" scoped>
