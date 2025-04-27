@@ -1,11 +1,27 @@
 import { defineStore } from 'pinia'
 
+export interface UserInfoType{
+  nickName:string
+  role:number
+  userId:number
+  avatar:string
+  token:string
+}
+
 /* 主题切换 */
 const theme = true
+const userInfo:UserInfoType = {
+  nickName:"",
+  role:0,
+  userId:0,
+  avatar:"",
+  token:"",
+}
 export const useCounterStore = defineStore('counter', {
   state(){
     return{
       theme: theme,
+      userInfo:userInfo,
     }
   },
   actions: {

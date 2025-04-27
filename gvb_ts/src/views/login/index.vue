@@ -2,8 +2,8 @@
   <div class="gvb_login">
     <div class="gvb_login_form">
       <a-form ref="formRef" :model="form" :label-col-props="{span: 0}" :wrapper-col-props="{span: 24}">
-        <div class="gvb_login_form_title">欢迎回来</div>
-        <div class="gvb_login_form_subtitle">请登录您的账户</div>
+        <div class="gvb_login_form_title">欢迎来到Codecify</div>
+        <div class="gvb_login_form_subtitle">开启您的技术博客之旅</div>
 
         <a-form-item field="user_name" label="用户名"
                      :rules="[{required:true,message:'请输入用户名'}]"
@@ -50,6 +50,9 @@
         </div>
       </a-form>
     </div>
+    <div class="login-footer">
+      <p>© 2025 Codecify · 技术博客平台 · <a-link>服务条款</a-link> · <a-link>隐私政策</a-link></p>
+    </div>
   </div>
 </template>
 
@@ -75,12 +78,13 @@ const socialIcons = [
 .gvb_login {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   overflow: hidden;
+  position: relative;
 
   &::before {
     content: "";
@@ -199,6 +203,19 @@ const socialIcons = [
           }
         }
       }
+    }
+  }
+  .login-footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: #95a5a6;
+    position: fixed;
+    bottom: 5px;
+
+    a {
+      color: inherit;
+      margin: 0 8px;
     }
   }
 }
