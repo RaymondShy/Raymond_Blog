@@ -11,15 +11,11 @@ export interface baseResponse<T> {
     data: T
     msg: string
 }
-
-export interface listResponse<T>{
-    code:number,
-    data:{
-        records:T[],
-        total:number
-    },
-    msg:string
+export interface listDataType<T>{
+    records:T[],
+    total:number
 }
+
 
 export interface paramsType{
     pageNum?:number // 页数

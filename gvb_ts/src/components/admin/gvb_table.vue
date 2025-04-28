@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import {IconRefresh} from "@arco-design/web-vue/es/icon";
 import {reactive, ref} from "vue";
-import type {listResponse, paramsType} from "@/api";
+import type {baseResponse, listDataType, paramsType} from "@/api";
 import type {TableColumnData} from "@arco-design/web-vue/es/table/interface";
 import type {userInfoType} from "@/api/user_api.ts";
 import {relativeCurrentTime} from "../../utils/date.ts";
@@ -74,7 +74,7 @@ import {Message} from "@arco-design/web-vue";
 const selectedKeys = ref(['Jane Doe', 'Alisa Ross']);
 
 interface Props{
-  url: (params:paramsType)=> Promise<listResponse<any>>,
+  url: (params:paramsType)=> Promise<baseResponse<listDataType<any>>>,
   columns:TableColumnData[],
   pageSize?:number,
 }
@@ -86,7 +86,7 @@ interface dataType{
   records: userInfoType[]
   total:number
 }
-const data = reactive<dataType>({
+const data = reactive<listDataType<any>>({
   records:[],
   total:0,
 })
