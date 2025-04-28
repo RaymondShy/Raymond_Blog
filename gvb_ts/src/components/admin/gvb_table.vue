@@ -43,8 +43,8 @@
                   <a-tag color="blue" v-if="record.status == 0">正常</a-tag>
                   <a-tag color="blue" v-else>异常</a-tag>
                 </template>
-                <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
-                  <span>自定义时间</span>
+                <template #cell="{record}" v-else-if="item.slotName === 'registerTime'">
+                  <span>{{ relativeCurrentTime(record.registerTime) }}</span>
                 </template>
                 <template v-else #cell="{record}">
                   <slot :name="item.slotName" :record="record"></slot>
@@ -67,6 +67,7 @@ import {reactive, ref} from "vue";
 import type {listResponse, paramsType} from "@/api";
 import type {TableColumnData} from "@arco-design/web-vue/es/table/interface";
 import type {userInfoType} from "@/api/user_api.ts";
+import {relativeCurrentTime} from "../../utils/date.ts";
 const selectedKeys = ref(['Jane Doe', 'Alisa Ross']);
 
 interface Props{
