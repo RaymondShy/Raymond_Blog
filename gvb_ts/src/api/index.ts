@@ -12,6 +12,22 @@ export interface baseResponse<T> {
     msg: string
 }
 
+export interface listResponse<T>{
+    code:number,
+    data:{
+        records:T[],
+        total:number
+    },
+    msg:string
+}
+
+export interface paramsType{
+    pageNum?:number // 页数
+    pageSize?:number // 每页显示的条数
+    sort?:string // 排序字段
+    key?:string // 搜索关键词
+}
+
 useAxios.interceptors.request.use((config) => {
     const store = useCounterStore()
     config.headers["token"] = store.userInfo.token

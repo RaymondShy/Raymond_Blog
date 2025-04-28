@@ -2,7 +2,7 @@
   <div class="gvb_logo">
     <img src="../../../public/image/logo.jpg"  alt="图片加载失败"/>
     <div class="logo_head">
-      <div>Raymond_Blog</div>
+      <div>Codecify_Blog</div>
     </div>
   </div>
 </template>
