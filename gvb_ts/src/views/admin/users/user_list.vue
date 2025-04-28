@@ -1,6 +1,10 @@
 <template>
   <div>
-    <gvb_table :url="getUserList" :columns="columns"/>
+    <gvb_table :url="getUserList" :columns="columns">
+      <template #avatar="{record}">
+        <a-avatar :image-url="record.avatar"/>
+      </template>
+    </gvb_table>
   </div>
 </template>
 
@@ -23,7 +27,7 @@ const columns = [
   },
   {
     title: '注册时间',
-    dataIndex: 'registerTime',
+    slotName: 'registerTime',
   },
 
   {

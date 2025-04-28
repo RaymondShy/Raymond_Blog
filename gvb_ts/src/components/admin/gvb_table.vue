@@ -23,22 +23,34 @@
       <div class="gvb_data_source">
         <a-table row-key="name" :columns="props.columns" :data="data.records" :row-selection="rowSelection"
                  v-model:selectedKeys="selectedKeys" :pagination="false">
-          <template #avatar="{record}">
-            <a-avatar>
-              <img src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"/>
-            </a-avatar>
-          </template>
-          <template #status="{record}">
-            <div>
-              <a-tag v-if="record.status == 0" color="blue">正常</a-tag>
-              <a-tag v-if="record.status == 1" color="orangered">异常</a-tag>
-            </div>
-          </template>
-          <template #action="{record}">
-            <a-space>
-              <a-button type="primary">编辑</a-button>
-              <a-button type="primary" status="danger">删除</a-button>
-            </a-space>
+          <template #columns>
+            <template v-for="item in props.columns">
+              <a-table-column v-if="item.render" :title="item.title as string">
+                <template #cell="data">
+                  <component :is="data.render"/>
+                </template>
+              </a-table-column>
+              <a-table-column v-else-if="!item.slotName" :title="item.title as string"
+                  :data-index="item.dataIndex"/>
+              <a-table-column :title="item.title as string" v-else>
+                <template #cell="{record}" v-if="item.slotName === 'action'">
+                  <a-space>
+                    <a-button type="primary">编辑</a-button>
+                    <a-button type="primary" status="danger">删除</a-button>
+                  </a-space>
+                </template>
+                <template #cell="{record}" v-else-if="item.slotName === 'status'">
+                  <a-tag color="blue" v-if="record.status == 0">正常</a-tag>
+                  <a-tag color="blue" v-else>异常</a-tag>
+                </template>
+                <template #cell="{record}" v-else-if="item.slotName === 'created_at'">
+                  <span>自定义时间</span>
+                </template>
+                <template v-else #cell="{record}">
+                  <slot :name="item.slotName" :record="record"></slot>
+                </template>
+              </a-table-column>
+            </template>
           </template>
         </a-table>
       </div>
