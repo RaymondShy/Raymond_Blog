@@ -1,6 +1,6 @@
 <template>
   <div>
-    <gvb_table :url="getUserList" :columns="columns">
+    <gvb_table :url="getUserList" :columns="columns" :page-size="8">
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"/>
       </template>

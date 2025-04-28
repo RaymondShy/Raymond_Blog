@@ -6,7 +6,7 @@
       </div>
       <div class="action_group"></div>
       <div class="action_search">
-        <a-input-search placeholder="搜索"/>
+        <a-input-search v-model="params.key" @keydown.enter="search" @search="search" placeholder="搜索"/>
       </div>
       <div class="action_other_search">
         <a-input-search placeholder="其他搜索"/>
@@ -15,14 +15,14 @@
         <a-select placeholder="过滤"/>
       </div>
       <div class="action_slot"></div>
-      <div class="action_flush">
+      <div class="action_flush" @click="flush">
         <a-button><IconRefresh></IconRefresh></a-button>
       </div>
     </div>
     <div class="gvb_table_body">
       <div class="gvb_data_source">
         <a-table row-key="name" :columns="props.columns" :data="data.records" :row-selection="rowSelection"
-                 v-model:selectedKeys="selectedKeys" :pagination="false">
+                 v-model:selectedKeys="selectedKeys" :scroll="false" :pagination="false" table-layout-fixed>
           <template #columns>
             <template v-for="item in props.columns">
               <a-table-column v-if="item.render" :title="item.title as string">
@@ -55,7 +55,9 @@
         </a-table>
       </div>
       <div class="gvb_page">
-        <a-pagination :total="data.total" show-total show-jumper/>
+        <a-pagination :total="data.total" @change="pageChange"
+                      v-model:current="params.pageNum" :default-page-size="params.pageSize"
+                      show-total show-jumper/>
       </div>
     </div>
   </div>
@@ -68,14 +70,18 @@ import type {listResponse, paramsType} from "@/api";
 import type {TableColumnData} from "@arco-design/web-vue/es/table/interface";
 import type {userInfoType} from "@/api/user_api.ts";
 import {relativeCurrentTime} from "../../utils/date.ts";
+import {Message} from "@arco-design/web-vue";
 const selectedKeys = ref(['Jane Doe', 'Alisa Ross']);
 
 interface Props{
   url: (params:paramsType)=> Promise<listResponse<any>>,
-  columns:TableColumnData[]
+  columns:TableColumnData[],
+  pageSize?:number,
 }
 
 const props = defineProps<Props>()
+/* 默认值设置 */
+const {pageSize = 10} = props
 interface dataType{
   records: userInfoType[]
   total:number
@@ -85,10 +91,21 @@ const data = reactive<dataType>({
   total:0,
 })
 
+/* 搜索参数 */
+const params = reactive<paramsType>({
+  key:'',
+  pageNum:1,
+  pageSize:props.pageSize,
+})
+
 const getList = async () =>{
-  let res = await props.url({})
+  let res = await props.url(params)
   data.records  = res.data.records
   data.total = res.data.total
+}
+
+const pageChange = () =>{
+  getList()
 }
 getList()
 const rowSelection = reactive({
@@ -97,6 +114,19 @@ const rowSelection = reactive({
   onlyCurrent: false,
 });
 
+/* 搜索 */
+const search = () =>{
+  // 页数归一
+  params.pageNum = 1;
+  getList()
+}
+
+/* 刷新 */
+const flush = () =>{
+  Message.success('刷新成功')
+  params.pageNum = 1;
+  getList()
+}
 </script>
 
 <style lang="scss" scoped>
