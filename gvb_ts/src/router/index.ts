@@ -19,7 +19,7 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       meta:{
-        title:'首页'
+        title:'Home'
       },
       component: () => import('../views/admin/index.vue'),
       children: [
@@ -27,7 +27,7 @@ const router = createRouter({
           path: "",
           name: "home",
           meta:{
-            title:'首页'
+            title:'Home'
           },
           component: () => import('../views/admin/home/index.vue'),
         },
@@ -35,14 +35,14 @@ const router = createRouter({
           path: "user_center",
           name: "user_center",
           meta:{
-            title:'个人中心'
+            title:'Personal center'
           },
           children: [
             {
               path: "user_info",
               name: "user_info",
               meta:{
-                title:'用户信息'
+                title:'My information'
               },
               component: () => import('../views/admin/user_center/user_info.vue'),
             }
@@ -52,14 +52,14 @@ const router = createRouter({
           path: "article",
           name: "article",
           meta:{
-            title:'文章管理'
+            title:'Article management'
           },
           children: [
             {
               path: "article_list",
               name: "article_list",
               meta:{
-                title:'文章列表'
+                title:'Article list'
               },
               component: () => import('../views/admin/article/article_list.vue'),
             }
@@ -69,14 +69,14 @@ const router = createRouter({
           path: "users",
           name: "users",
           meta:{
-            title:'用户管理'
+            title:'User management'
           },
           children: [
             {
               path: "user_list",
               name: "user_list",
               meta:{
-                title:'用户列表'
+                title:'User list'
               },
               component: () => import('../views/admin/users/user_list.vue'),
             }
@@ -86,14 +86,14 @@ const router = createRouter({
           path: "chat_group",
           name: "chat_group",
           meta:{
-            title:'群聊管理'
+            title:'Chat group management'
           },
           children: [
             {
               path: "chat_list",
               name: "chat_list",
               meta:{
-                title:'群聊列表'
+                title:'Chat history'
               },
               component: () => import('../views/admin/chat_group/chat_list.vue'),
             }
@@ -102,10 +102,16 @@ const router = createRouter({
         {
           path: "system",
           name: "system",
+          meta: {
+            title: 'System'
+          },
           children: [
             {
               path: "menu_list",
               name: "menu_list",
+              meta: {
+                title:'Menu list'
+              },
               component: () => import('../views/admin/system/menu_list.vue'),
             }
           ]

@@ -2,7 +2,7 @@
   <div class="gvb_table">
     <div class="gvb_table_head">
       <div class="action_create">
-        <a-button type="primary">创建</a-button>
+        <a-button type="primary" @click="add">{{addLabel}}</a-button>
       </div>
       <div class="action_group"></div>
       <div class="action_search">
@@ -21,8 +21,8 @@
     </div>
     <div class="gvb_table_body">
       <div class="gvb_data_source">
-        <a-table row-key="name" :columns="props.columns" :data="data.records" :row-selection="rowSelection"
-                 v-model:selectedKeys="selectedKeys" :scroll="false" :pagination="false" table-layout-fixed>
+        <a-table :row-key=rowKey :columns="props.columns" :data="data.records" :row-selection="rowSelection"
+                 v-model:selectedKeys="selectedKeys" :scroll="false" :pagination="false">
           <template #columns>
             <template v-for="item in props.columns">
               <a-table-column v-if="item.render" :title="item.title as string">
@@ -35,8 +35,10 @@
               <a-table-column :title="item.title as string" v-else>
                 <template #cell="{record}" v-if="item.slotName === 'action'">
                   <a-space>
-                    <a-button type="primary">编辑</a-button>
-                    <a-button type="primary" status="danger">删除</a-button>
+                    <a-button type="primary" @click="edit(record)">编辑</a-button>
+                    <a-popconfirm content="Are you sure you want to delete?" @ok="remove(record)">
+                      <a-button type="primary" status="danger">删除</a-button>
+                    </a-popconfirm>
                   </a-space>
                 </template>
                 <template #cell="{record}" v-else-if="item.slotName === 'status'">
@@ -67,21 +69,26 @@
 import {IconRefresh} from "@arco-design/web-vue/es/icon";
 import {reactive, ref} from "vue";
 import type {baseResponse, listDataType, paramsType} from "@/api";
-import type {TableColumnData} from "@arco-design/web-vue/es/table/interface";
-import type {userInfoType} from "@/api/user_api.ts";
+import type {TableColumnData, TableData} from "@arco-design/web-vue/es/table/interface";
+import {defaultDeleteApi, type userInfoType} from "@/api/user_api.ts";
 import {relativeCurrentTime} from "../../utils/date.ts";
 import {Message} from "@arco-design/web-vue";
 const selectedKeys = ref(['Jane Doe', 'Alisa Ross']);
+
+const emits = defineEmits(["add","edit","remove"])
 
 interface Props{
   url: (params:paramsType)=> Promise<baseResponse<listDataType<any>>>,
   columns:TableColumnData[],
   pageSize?:number,
+  rowKey?:string,
+  addLabel?:string,
+  defaultDelete?:boolean
 }
 
 const props = defineProps<Props>()
 /* 默认值设置 */
-const {pageSize = 10} = props
+const {pageSize = 10,rowKey = 'userId',addLabel='添加'} = props
 interface dataType{
   records: userInfoType[]
   total:number
@@ -126,6 +133,29 @@ const flush = () =>{
   Message.success('刷新成功')
   params.pageNum = 1;
   getList()
+}
+/* 新增 */
+const add = () =>{
+  emits("add")
+}
+/* 修改 */
+const edit = (record: TableData) =>{
+  emits("edit",record)
+}
+/* 删除 */
+const remove = async (record: TableData) =>{
+  let id = record[rowKey]
+  if (props.defaultDelete){ // 启用默认删除
+    let res = await defaultDeleteApi([id])
+    if (res.code !== 200){
+      Message.error(res.msg)
+      return
+    }
+    Message.success(res.msg)
+    getList()
+    return;
+  }
+  emits("remove",[id])
 }
 </script>
 

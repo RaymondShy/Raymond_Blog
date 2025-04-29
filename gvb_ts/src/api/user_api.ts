@@ -33,3 +33,7 @@ export function loginPwdApi(request: loginEmailType): Promise<baseResponse<strin
 export function getUserList(params:paramsType):Promise<baseResponse<listDataType<userInfoType>>> {
     return useAxios.get("/api/system/search",{params})
 }
+
+export function defaultDeleteApi(idList:number[]):Promise<baseResponse<string>> {
+    return useAxios.delete(`/api/system/${idList}`)
+}

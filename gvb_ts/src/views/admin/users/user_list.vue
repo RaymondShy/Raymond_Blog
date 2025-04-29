@@ -1,6 +1,9 @@
 <template>
   <div>
-    <gvb_table :url="getUserList" :columns="columns" :page-size="8">
+    <gvb_table :url="getUserList" :columns="columns"
+               :page-size="8" add-label="创建用户"
+               default-delete
+               @add="add" @remove="remove" @edit="edit">
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"/>
       </template>
@@ -10,7 +13,7 @@
 
 <script setup lang="ts">
 import Gvb_table from "@/components/admin/gvb_table.vue";
-import {getUserList} from "@/api/user_api.ts";
+import {getUserList, type userInfoType} from "@/api/user_api.ts";
 
 const columns = [
   {
@@ -55,6 +58,18 @@ const columns = [
     slotName:'action'
   }
 ]
+/* 新增 */
+const add = (record:userInfoType) =>{
+  console.log('add',record)
+}
+/* 修改 */
+const edit = (record:userInfoType) =>{
+  console.log(record)
+}
+/* 删除 */
+const remove = (idList: number[]) =>{
+  console.log(idList)
+}
 </script>
 
 <style scoped>
