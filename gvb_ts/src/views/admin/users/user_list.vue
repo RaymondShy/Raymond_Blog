@@ -62,8 +62,8 @@ const columns = [
 ]
 /* 操作组 */
 const actionGroupOptions:optionType[] = [
-  {label:'批量拉黑',callback:(idList:(number|string)[]):void =>{
-    console.log(idList)
+  {label:'批量拉黑',callback: async (idList:(number|string)[]):Promise<boolean> =>{
+    return true;
   }}
 ]
 /* 新增 */

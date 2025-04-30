@@ -132,17 +132,25 @@ const actionMethod = async ()=>{
     }
     Message.success("Deleted successfully")
     getList()
+    return
   }
-  if (currentAction.value !== 0){
-    let group = actionGroup.value[currentAction.value as number];
-    group.callback(selectedKeys.value);
+  const action = actionGroup.value[currentAction.value as number];
+  if (!action.callback){
+    return;
   }
+  action.callback(selectedKeys.value).then(res =>{
+    if (res){
+      selectedKeys.value = []
+      getList();
+      return
+    }
+  })
 }
 /* 操作组类型 */
 export interface optionType{
   label:string
   value?:number | string
-  callback?:(value:(number|string)[]) => void
+  callback?:(value:(number|string)[]) => Promise<boolean>
 }
 /* 操作组 */
 const actionGroup = ref<optionType[]>([
