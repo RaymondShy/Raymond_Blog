@@ -27,12 +27,12 @@
     <div class="gvb_table_body">
       <div class="gvb_data_source">
         <a-table :row-key=rowKey :columns="props.columns" :data="data.records" :row-selection="rowSelection"
-                 v-model:selectedKeys="selectedKeys" :scroll="false" :pagination="false">
+                 v-model:selectedKeys="selectedKeys"  :pagination="false">
           <template #columns>
             <template v-for="item in props.columns">
               <a-table-column v-if="item.render" :title="item.title as string">
                 <template #cell="data">
-                  <component :is="data.render"/>
+                  <component :is="data.render(data) as Component"/>
                 </template>
               </a-table-column>
               <a-table-column v-else-if="!item.slotName" :title="item.title as string"
@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import {IconRefresh} from "@arco-design/web-vue/es/icon";
-import {reactive, ref} from "vue";
+import {type Component, reactive, ref} from "vue";
 import type {baseResponse, listDataType, paramsType} from "@/api";
 import type {TableColumnData, TableData} from "@arco-design/web-vue/es/table/interface";
 import {defaultDeleteApi, type userInfoType} from "@/api/user_api.ts";
@@ -94,16 +94,16 @@ interface Props{
 }
 
 const props = defineProps<Props>()
+const data = reactive<listDataType<any>>({
+  records:[],
+  total:0,
+})
 /* 默认值设置 */
 const {pageSize = 10,rowKey = 'userId',addLabel='添加'} = props
 interface dataType{
   records: userInfoType[]
   total:number
 }
-const data = reactive<listDataType<any>>({
-  records:[],
-  total:0,
-})
 
 /* 搜索参数 */
 const params = reactive<paramsType>({
