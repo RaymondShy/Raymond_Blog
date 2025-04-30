@@ -26,7 +26,7 @@
     </div>
     <div class="gvb_table_body">
       <div class="gvb_data_source">
-        <a-table :row-key=rowKey :columns="props.columns" :data="data.records" :row-selection="rowSelection"
+        <a-table :row-key=rowKey :columns="props.columns" :data="data.records" :row-selection="props.noCheck ? undefined: rowSelection"
                  v-model:selectedKeys="selectedKeys"  :pagination="false">
           <template #columns>
             <template v-for="item in props.columns">
@@ -90,7 +90,8 @@ interface Props{
   addLabel?:string,
   defaultDelete?:boolean,
   noActionGroup?:boolean, // 不启用操作组
-  actionGroupOptions?:optionType[]
+  actionGroupOptions?:optionType[],
+  noCheck?:boolean,
 }
 
 const props = defineProps<Props>()
