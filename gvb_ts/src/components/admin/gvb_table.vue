@@ -10,7 +10,7 @@
       <div class="action_group"  v-if="!noActionGroup">
         <a-space>
           <a-select style="width: 100px" :options="actionGroup" v-model="currentAction" allow-clear  placeholder="操作组"/>
-          <a-button type="primary" status="danger" @click="actionMethod" v-if="currentAction">执行</a-button>
+          <a-button type="primary" status="danger" @click="actionMethod" v-if="currentAction !== undefined">执行</a-button>
         </a-space>
       </div>
       <div class="action_other_search">
@@ -90,6 +90,7 @@ interface Props{
   addLabel?:string,
   defaultDelete?:boolean,
   noActionGroup?:boolean, // 不启用操作组
+  actionGroupOptions?:optionType[]
 }
 
 const props = defineProps<Props>()
@@ -110,8 +111,6 @@ const params = reactive<paramsType>({
   pageNum:1,
   pageSize:props.pageSize,
 })
-
-
 const getList = async () =>{
   let res = await props.url(params)
   data.records  = res.data.records
@@ -121,7 +120,7 @@ const currentAction = ref<string | number | undefined>(undefined)
 /* 操作组执行按钮 */
 const actionMethod = async ()=>{
     console.log(selectedKeys.value)
-  if(currentAction.value === 1){
+  if(currentAction.value === 0){
     if (selectedKeys.value.length === 0){
       Message.warning("Please select the content to be deleted")
       return
@@ -134,15 +133,20 @@ const actionMethod = async ()=>{
     Message.success("Deleted successfully")
     getList()
   }
+  if (currentAction.value !== 0){
+    let group = actionGroup.value[currentAction.value as number];
+    group.callback(selectedKeys.value);
+  }
 }
 /* 操作组类型 */
-interface optionType{
+export interface optionType{
   label:string
-  value:number | string
+  value?:number | string
+  callback?:(value:(number|string)[]) => void
 }
 /* 操作组 */
 const actionGroup = ref<optionType[]>([
-  {label:'批量删除',value:1}
+  {label:'批量删除',value:0}
 ])
 
 const pageChange = () =>{
@@ -191,6 +195,18 @@ const remove = async (record: TableData) =>{
   }
   emits("remove",[id])
 }
+/* 初始化操作组 */
+const initActionGroupOptions = () =>{
+  if (!props.actionGroupOptions) return;
+  for (let i = 0; i < props.actionGroupOptions.length; i++) {
+    actionGroup.value.push({
+      label:props.actionGroupOptions[i].label,
+      value: i +1,
+      callback: props.actionGroupOptions[i].callback
+    })
+  }
+}
+initActionGroupOptions()
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,8 @@
     <gvb_table :url="getUserList" :columns="columns"
                :page-size="8" add-label="创建用户"
                default-delete
-               @add="add" @remove="remove" @edit="edit">
+               @add="add" @remove="remove" @edit="edit"
+               :action-group-options="actionGroupOptions">
       <template #avatar="{record}">
         <a-avatar :image-url="record.avatar"/>
       </template>
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import Gvb_table from "@/components/admin/gvb_table.vue";
 import {getUserList, type userInfoType} from "@/api/user_api.ts";
+import type {optionType} from "@/components/admin/gvb_table.vue";
 
 const columns = [
   {
@@ -57,6 +59,12 @@ const columns = [
     title:'操作',
     slotName:'action'
   }
+]
+/* 操作组 */
+const actionGroupOptions:optionType[] = [
+  {label:'批量拉黑',callback:(idList:(number|string)[]):void =>{
+    console.log(idList)
+  }}
 ]
 /* 新增 */
 const add = (record:userInfoType) =>{
