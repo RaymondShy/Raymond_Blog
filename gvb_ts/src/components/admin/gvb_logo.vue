@@ -1,6 +1,6 @@
 <template>
   <div class="gvb_logo">
-    <img src="../../../public/image/logo.jpg"  alt="图片加载失败"/>
+<!--    <img src="../../../public/image/logo.jpg"  alt="图片加载失败"/>-->
     <div class="logo_head">
       <div>Codecify_Blog</div>
     </div>

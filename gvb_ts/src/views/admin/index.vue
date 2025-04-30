@@ -63,13 +63,13 @@ import Gvb_theme from "@/components/admin/gvb_theme.vue";
   height: 100%;
   display: flex;
   aside{
-    width: 240px;
+    width: 200px;
     height: 100vh;
     border-right: 1px solid var(--bg);
     background-color: var(--color-bg-1);
   }
   main{
-    width: calc(100% - 240px);
+    width: calc(100% - 200px);
     .gvb_head{
       width: 100%;
       height: 60px;

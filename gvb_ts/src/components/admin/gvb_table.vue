@@ -4,9 +4,14 @@
       <div class="action_create">
         <a-button type="primary" @click="add">{{addLabel}}</a-button>
       </div>
-      <div class="action_group"></div>
       <div class="action_search">
-        <a-input-search v-model="params.key" @keydown.enter="search" @search="search" placeholder="搜索"/>
+        <a-input-search v-model="params.key" @keydown.enter="search" placeholder="搜索" @search="search"></a-input-search>
+      </div>
+      <div class="action_group"  v-if="!noActionGroup">
+        <a-space>
+          <a-select style="width: 100px" :options="actionGroup" v-model="currentAction" allow-clear  placeholder="操作组"/>
+          <a-button type="primary" status="danger" @click="actionMethod" v-if="currentAction">执行</a-button>
+        </a-space>
       </div>
       <div class="action_other_search">
         <a-input-search placeholder="其他搜索"/>
@@ -73,7 +78,7 @@ import type {TableColumnData, TableData} from "@arco-design/web-vue/es/table/int
 import {defaultDeleteApi, type userInfoType} from "@/api/user_api.ts";
 import {relativeCurrentTime} from "../../utils/date.ts";
 import {Message} from "@arco-design/web-vue";
-const selectedKeys = ref(['Jane Doe', 'Alisa Ross']);
+const selectedKeys = ref<number[] | string[]>([]);
 
 const emits = defineEmits(["add","edit","remove"])
 
@@ -83,7 +88,8 @@ interface Props{
   pageSize?:number,
   rowKey?:string,
   addLabel?:string,
-  defaultDelete?:boolean
+  defaultDelete?:boolean,
+  noActionGroup?:boolean, // 不启用操作组
 }
 
 const props = defineProps<Props>()
@@ -105,11 +111,39 @@ const params = reactive<paramsType>({
   pageSize:props.pageSize,
 })
 
+
 const getList = async () =>{
   let res = await props.url(params)
   data.records  = res.data.records
   data.total = res.data.total
 }
+const currentAction = ref<string | number | undefined>(undefined)
+/* 操作组执行按钮 */
+const actionMethod = async ()=>{
+    console.log(selectedKeys.value)
+  if(currentAction.value === 1){
+    if (selectedKeys.value.length === 0){
+      Message.warning("Please select the content to be deleted")
+      return
+    }
+    let res = await defaultDeleteApi(selectedKeys.value as number[])
+    if (res.code !== 200){
+      Message.error("Delete failed")
+      return
+    }
+    Message.success("Deleted successfully")
+    getList()
+  }
+}
+/* 操作组类型 */
+interface optionType{
+  label:string
+  value:number | string
+}
+/* 操作组 */
+const actionGroup = ref<optionType[]>([
+  {label:'批量删除',value:1}
+])
 
 const pageChange = () =>{
   getList()
@@ -171,6 +205,9 @@ const remove = async (record: TableData) =>{
     position: relative;
     > div{
       margin-right: 10px;
+    }
+    .action_group{
+      display: flex;
     }
     .action_flush{
       position: absolute;
