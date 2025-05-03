@@ -3,8 +3,13 @@ import {useCounterStore} from "@/stores/counter.ts";
 import {Message} from "@arco-design/web-vue";
 
 export const useAxios = axios.create({
-    baseURL: ""
+    baseURL: "",
+    headers:{
+        "Content-Type": "application/json;charset=utf-8",
+    },
+    responseType:"json"
 })
+// useAxios.defaults.headers.get['Content-Type'] = 'application/json'
 
 export interface baseResponse<T> {
     code: number
@@ -26,7 +31,9 @@ export interface paramsType{
 
 useAxios.interceptors.request.use((config) => {
     const store = useCounterStore()
-    config.headers["token"] = store.userInfo.token
+    config.headers["Content-Type"] = "application/json;charset=utf-8"
+    config.headers["Authorization"] =  'Bearer '+ store.userInfo.token
+    console.log(config.headers["Authorization"])
     return config
 })
 

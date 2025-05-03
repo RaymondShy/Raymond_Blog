@@ -2,7 +2,7 @@ import type {baseResponse, listDataType, paramsType} from "@/api/index";
 import {useAxios} from "@/api/index";
 
 export interface loginEmailType {
-    userName: string
+    username: string
     password: string
 }
 
@@ -27,11 +27,18 @@ export interface userInfoType {
 }
 
 export function loginPwdApi(request: loginEmailType): Promise<baseResponse<string>> {
-    return useAxios.post("/api/login/pwd", request)
+    return useAxios.post("/api/login/pwd", request,
+        {
+            headers:{
+                "Content-Type": "application/json",
+            }
+        })
 }
 
 export function getUserList(params:paramsType):Promise<baseResponse<listDataType<userInfoType>>> {
-    return useAxios.get("/api/system/search",{params})
+    return useAxios.get("/api/system/search", {params:params,headers:{
+        "Content-Type": "application/json",
+        }})
 }
 
 export function defaultDeleteApi(idList:number[]):Promise<baseResponse<string>> {

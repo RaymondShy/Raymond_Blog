@@ -20,7 +20,7 @@ export default defineConfig({
     port: 80,
     proxy: {
       "/api": {
-        target: "http://localhost:10001",
+        target: "http://localhost:10002",
         changeOrigin: true,
       },
       // "/uploads": {

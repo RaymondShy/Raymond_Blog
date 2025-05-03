@@ -13,13 +13,11 @@
           <a-button type="primary" status="danger" @click="actionMethod" v-if="currentAction !== undefined">执行</a-button>
         </a-space>
       </div>
-      <div class="action_other_search">
-        <a-input-search placeholder="其他搜索"/>
+      <slot name="action_other_search"></slot>
+      <div class="action_filter" v-if="filterGroup.length">
+        <a-select :placeholder="item.label" style="width: 150px" @change="filterChange(item,$event)" :options="item.options" v-for="item in filterGroup"/>
       </div>
-      <div class="action_filter">
-        <a-select placeholder="过滤"/>
-      </div>
-      <div class="action_slot"></div>
+      <slot name="action_slot"></slot>
       <div class="action_flush" @click="flush">
         <a-button><IconRefresh></IconRefresh></a-button>
       </div>
@@ -114,6 +112,7 @@ const params = reactive<paramsType>({
 })
 const getList = async () =>{
   let res = await props.url(params)
+  console.log(res)
   data.records  = res.data.records
   data.total = res.data.total
 }
@@ -216,6 +215,35 @@ const initActionGroupOptions = () =>{
   }
 }
 initActionGroupOptions()
+/* 过滤组 */
+const filterGroup = ref([
+  {
+    label:'角色过滤',
+    value:0,
+    column:"role",
+    options:[
+      {
+        label:'管理员',
+        value:1
+      }
+    ]
+  },
+  {
+    label:'ip过滤',
+    value:1,
+    column:"ip",
+    options:[
+      {
+        label:'192.168.66.9',
+        value:1
+      }
+    ]
+  },
+])
+/* 过滤事件 */
+const filterChange = (item:any,val:any)=>{
+  console.log(item,val)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -232,6 +260,9 @@ initActionGroupOptions()
       margin-right: 10px;
     }
     .action_group{
+      display: flex;
+    }
+    .action_filter{
       display: flex;
     }
     .action_flush{

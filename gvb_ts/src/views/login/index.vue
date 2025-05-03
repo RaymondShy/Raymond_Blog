@@ -5,11 +5,11 @@
         <div class="gvb_login_form_title">欢迎来到Codecify</div>
         <div class="gvb_login_form_subtitle">开启您的技术博客之旅</div>
 
-        <a-form-item field="userName" label="用户名"
+        <a-form-item field="username" label="用户名"
                      :rules="[{required:true,message:'请输入用户名'}]"
                      :validate-trigger="['blur']"
         >
-          <a-input v-model="form.userName" placeholder="请输入用户名" allow-clear>
+          <a-input v-model="form.username" placeholder="请输入用户名" allow-clear>
             <template #prefix>
               <icon-user class="input-icon"/>
             </template>
@@ -63,11 +63,12 @@ import {loginPwdApi} from "@/api/user_api.ts";
 import {Message} from "@arco-design/web-vue";
 import {useRouter} from "vue-router";
 import {useCounterStore} from "@/stores/counter.ts";
+import {useAxios} from "@/api";
 
 const router = useRouter()
 const store = useCounterStore()
 const form = reactive({
-  userName: "",
+  username: "",
   password: ""
 });
 
@@ -81,7 +82,7 @@ const socialIcons = [
 const formRef = ref()
 // 用户名密码登录
 const loginPwdClick = async () =>{
-  console.log(form.userName);
+  console.log(form.username);
   let val = await formRef.value.validate()
   if (val) {
     console.log(val);
@@ -92,6 +93,10 @@ const loginPwdClick = async () =>{
     Message.error(res.msg)
     return
   }
+  const token = res.data
+  localStorage.setItem('token', token)
+  // 设置axios默认授权头
+  useAxios.defaults.headers['Authorization'] = `Bearer ${token}`
   Message.success(res.msg)
   store.setToken(res.data)
   router.push("/admin")
