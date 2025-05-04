@@ -44,3 +44,18 @@ export function getUserList(params:paramsType):Promise<baseResponse<listDataType
 export function defaultDeleteApi(idList:number[]):Promise<baseResponse<string>> {
     return useAxios.delete(`/api/system/${idList}`)
 }
+
+export interface userCreateType {
+    userName:string,
+    password:string,
+    realName:string,
+    gender:string,
+    mobile:string,
+    email:string,
+    status:string
+}
+
+// 创建用户
+export function userCreateApi(data:userCreateType):Promise<baseResponse<string>> {
+    return useAxios.post("/api/system/create",data)
+}
