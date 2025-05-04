@@ -11,6 +11,14 @@
                      :validate-trigger="['blur']">
           <a-input v-model="form.realName" placeholder="请输入真实姓名" />
         </a-form-item>
+        <a-form-item field="password" label="密码" :rules="[{required:true,message:'请输入密码'}]"
+                     :validate-trigger="['blur']">
+          <a-input type="password" placeholder="请输入密码" v-model="form.password"/>
+        </a-form-item>
+        <a-form-item field="re_password" label="确认密码" :rules="[{required:true,message:'请确认密码'},{validator:rePasswordValidator}]"
+                     :validate-trigger="['blur']">
+          <a-input type="password" placeholder="请确认密码" v-model="form.re_password"/>
+        </a-form-item>
         <a-form-item field="gender" label="性别" :rules="[{required:true,message:'请选择性别'}]"
                      :validate-trigger="['blur']">
           <a-radio-group>
@@ -148,6 +156,10 @@ const  createUser = async () => {
   console.log(val)
   if (val) return false
   return true
+}
+    //  密码校验
+const rePasswordValidator = (value:string,callback:(error?:string) =>void):void=>{
+  if(value !== form.password) return callback("确认密码不一致")
 }
     /* 新增 */
 const add = (record:userInfoType) =>{
