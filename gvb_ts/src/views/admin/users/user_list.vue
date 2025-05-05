@@ -248,6 +248,7 @@ const  createUser = async () => {
 const cancelUser = () =>{
   Object.assign(form,defaultForm)
   visible.value = false
+  return true
 }
 //  密码校验
 const rePasswordValidator = (value:string,callback:(error?:string) =>void):void=>{
