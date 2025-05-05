@@ -79,7 +79,7 @@ const menuList:MenuType[] = [
     key: "6", title: "System management\n", icon: IconUser, name: "system", child: [
       {key: "6-1", title: "Menu list", icon: IconUser, name: "menu_list"},
     ]
-  },
+  }
 
 ]
 // 菜单点击事件
@@ -94,4 +94,10 @@ watch(()=>route.name,()=>{
   openKeys.value=[route.matched[1].name];
 })
 </script>
+
+<style lang="scss">
+.gvb_menu {
+  border-right:1px solid var(--color-border);
+}
+</style>
 

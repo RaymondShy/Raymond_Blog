@@ -83,6 +83,23 @@ const router = createRouter({
           ]
         },
         {
+          path: "user_center",
+          name: "user_center",
+          meta: {
+            title: 'User center'
+          },
+          children: [
+            {
+              path: "user_info",
+              name: "user_info",
+              meta: {
+                title:'User info'
+              },
+              component: () => import('../views/admin/user_center/user_info.vue'),
+            }
+          ]
+        },
+        {
           path: "chat_group",
           name: "chat_group",
           meta:{
@@ -116,6 +133,14 @@ const router = createRouter({
             }
           ]
         },
+        {
+          path: "settings",
+          name:"settings",
+          meta:{
+            title:'Account settings'
+          },
+          component:()=>import('../views/admin/settings/AccountSettings.vue')
+        }
       ]
     },
     {

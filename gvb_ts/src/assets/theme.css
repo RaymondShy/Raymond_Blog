@@ -1,5 +1,5 @@
  body{
-    --bg:#f0eeee;
+    --bg:var(--color-fill-2);
     --active: #165dff;
     --login_bg: rgba(255,255,255,0.5);
 }

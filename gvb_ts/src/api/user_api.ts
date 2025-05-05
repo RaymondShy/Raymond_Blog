@@ -47,15 +47,16 @@ export function defaultDeleteApi(idList:number[]):Promise<baseResponse<string>> 
 
 export interface userCreateType {
     userName:string,
+    nickName:string,
     password:string,
     realName:string,
     gender:string,
-    mobile:string,
+    tel:string,
     email:string,
     status:string
 }
 
 // 创建用户
 export function userCreateApi(data:userCreateType):Promise<baseResponse<string>> {
-    return useAxios.post("/api/system/create",data)
+    return useAxios.post("/api/system",data)
 }

@@ -1,0 +1,11 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- 左侧尖括号 -->
+    <polyline points="18,32 8,24 18,16" stroke="#165DFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 右侧尖括号 -->
+    <polyline points="46,16 56,24 46,32" stroke="#165DFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 对话气泡（C形） -->
+    <path d="M40 20C36 16 24 16 24 32C24 48 36 48 40 44" stroke="#165DFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="32" cy="40" rx="6" ry="3" fill="#165DFF" opacity="0.15"/>
+    <!-- 气泡小尾巴 -->
+    <polygon points="32,46 30,44 34,44" fill="#165DFF" opacity="0.15"/>
+</svg>

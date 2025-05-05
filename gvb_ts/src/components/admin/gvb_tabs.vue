@@ -1,12 +1,23 @@
 <template>
   <div class="gvb_tabs">
-    <div :class="{gvb_tab:true, active:item.name === route.name}" v-for="item in tabList"
-         @click="clickTab(item)"
-         :key="item.name">
-      {{item.title}}
-      <IconClose @click.stop="closeClick(item)" v-if="item.name !== 'home'"/>
+    <div class="tabs-scroll">
+      <div
+          v-for="item in tabList"
+          :key="item.name"
+          :class="['gvb_tab', { active: item.name === route.name }]"
+          @click="clickTab(item)"
+      >
+        <span class="tab-title">{{ item.title }}</span>
+        <IconClose
+            v-if="item.name !== 'home'"
+            class="tab-close"
+            @click.stop="closeClick(item)"
+        />
+      </div>
     </div>
-    <div class="gvb_tab close_all_tab" @click="closeAllTabClick">全部关闭</div>
+    <a-button class="close_all_tab" size="mini" @click="closeAllTabClick" type="outline">
+      全部关闭
+    </a-button>
   </div>
 </template>
 
@@ -98,41 +109,96 @@ loadTabs()
 </script>
 
 <style lang="scss" scoped>
-.gvb_tabs{
+.gvb_tabs {
   width: 100%;
-  height: 30px;
-  border-bottom:1px solid var(--bg);
-  align-items: center;
-  padding: 0 20px;
+  height: 40px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-1);
   display: flex;
+  align-items: center;
   position: relative;
-  .gvb_tab{
-    border-radius: 5px;
-    border: 1px solid var(--bg);
-    padding: 2px 6px;
-    margin-right: 10px;
-    cursor: pointer;
-    &.active{
-      background-color: var(--active);
-      color: #fff;
+  padding: 0 12px;
+
+  .tabs-scroll {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    flex: 1;
+    &::-webkit-scrollbar {
+      height: 4px;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-bg-1);
+      border-radius: 2px;
     }
   }
-  .close_all_tab{
-    position: absolute;
-    right: 20px;
-    border: 1px solid var(--bg);
-    padding: 2px 6px;
-    border-radius: 5px;
+
+  .gvb_tab {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border-radius: 6px 6px 0 0;
+    margin-right: 8px;
+    padding: 0 16px;
+    height: 32px;
+    font-size: 15px;
+    color: var(--color-text-2);
     cursor: pointer;
+    position: relative;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: var(--color-fill-2);
+    }
+
+    &.active {
+      background: var(--color-bg-1);
+      color: rgb(var(--primary-6));
+      font-weight: 600;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+      border-bottom: 2px solid rgb(var(--primary-6));
+      z-index: 1;
+    }
+
+    .tab-title {
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
+    .tab-close {
+      font-size: 13px;
+      color: #bbb;
+      margin-left: 2px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      border-radius: 50%;
+      &:hover {
+        background: #f2f3f5;
+        color: #f53f3f;
+      }
+    }
+
+    &:hover .tab-close {
+      opacity: 1;
+    }
   }
-  svg{
-    font-size: 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    &:hover{
-      background-color: var(--bg);
+
+  .close_all_tab {
+    margin-left: 12px;
+    height: 28px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-2);
+    color: var(--color-text-2);
+    transition: background 0.2s, color 0.2s;
+    &:hover {
+      background: rgb(var(--primary-1));
+      color: rgb(var(--primary-6));
+      border-color: rgb(var(--primary-6));
     }
   }
 }
-
 </style>
+
