@@ -76,13 +76,22 @@
               </template>
             </a-select>
           </a-form-item>
+          <a-form-item field="roleId" label="角色" :rules="[{required:true,message:'请选择角色'}]"
+                       :validate-trigger="['blur']">
+            <a-select placeholder="请选择角色" :options="roleList" :field-names="fieldNames" v-model="form.roleId">
+              <template #prefix>
+                <icon-check-circle class="input-icon" />
+              </template>
+            </a-select>
+          </a-form-item>
+
         </a-form>
       </a-modal>
       <div class="table-wrapper">
         <gvb_table :url="getUserList" :columns="columns"
                    :page-size="8" add-label="创建用户"
                    default-delete
-                   @add="visible = true" @remove="remove" @edit="edit"
+                   @add="openModal" @remove="remove" @edit="edit"
                    :action-group-options="actionGroupOptions"
         ref="gvbTable">
           <template #avatar="{record}">
@@ -112,6 +121,7 @@ import {
 } from '@arco-design/web-vue/es/icon';
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import {Message} from "@arco-design/web-vue";
+import {getRoleList, type roleType} from "@/api/role_api.ts";
 const visible = ref(false)
 const columns = [
   {
@@ -175,7 +185,8 @@ const form = reactive<userCreateType&{re_password:string}&{avatar:string}>({
   email:"",
   status:"0",
   re_password:"",
-  avatar:"https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+  avatar:"https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp",
+  roleId:undefined
 })
 const defaultForm = {
   userName:"",
@@ -243,6 +254,16 @@ const  createUser = async () => {
   gvbTable.value.getList()
   Object.assign(form,defaultForm)
   return true
+}
+const fieldNames = {value:'roleId',label:'roleName'}
+const roleList= reactive<roleType[]>([])
+/* 打开弹窗 */
+const openModal = async () => {
+  const res = await getRoleList()
+  let roleList2 = res.data
+  Object.assign(roleList, roleList2)
+  visible.value = true
+  console.log(roleList)
 }
 /* cancelUser 取消表单 */
 const cancelUser = () =>{

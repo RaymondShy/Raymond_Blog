@@ -53,10 +53,11 @@ export interface userCreateType {
     gender:string,
     tel:string,
     email:string,
-    status:string
+    status:string,
+    roleId:number|undefined
 }
 
 // 创建用户
 export function userCreateApi(data:userCreateType):Promise<baseResponse<string>> {
-    return useAxios.post("/api/system",data)
+    return useAxios.post(`/api/system/${data.roleId}`,data)
 }
