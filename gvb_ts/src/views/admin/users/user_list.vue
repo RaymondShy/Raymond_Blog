@@ -2,91 +2,7 @@
   <div>
     <gvb_bread_crumb/>
     <div class="user-list-container">
-      <a-modal title="创建用户" v-model:visible="visible" :on-before-ok="createUser" :on-before-cancel="cancelUser" class="user-form-modal">
-        <a-form ref="formRef" :model="form" :label-col-props="{ span: 6 }"
-                :wrapper-col-props="{ span: 18 }" class="user-form">
-          <a-form-item field="userName" label="用户名" :rules="[{required:true,message:'请输入用户名'}]"
-                       :validate-trigger="['blur']">
-            <a-input v-model="form.userName" placeholder="请输入用户名" allow-clear>
-              <template #prefix>
-                <icon-user class="input-icon" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item field="nickName" label="昵称" :rules="[{required:true,message:'请输入昵称'}]"
-                       :validate-trigger="['blur']">
-            <a-input v-model="form.nickName" placeholder="请输入用户昵称" allow-clear>
-              <template #prefix>
-                <icon-user class="input-icon" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item field="realName" label="真实姓名" :rules="[{required:true,message:'请输入真实姓名'}]"
-                       :validate-trigger="['blur']">
-            <a-input v-model="form.realName" placeholder="请输入真实姓名" allow-clear>
-              <template #prefix>
-                <icon-user-group class="input-icon" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item field="password" label="密码" :rules="[{required:true,message:'请输入密码'}]"
-                       :validate-trigger="['blur']">
-            <a-input-password v-model="form.password" placeholder="请输入密码" allow-clear>
-              <template #prefix>
-                <icon-lock class="input-icon" />
-              </template>
-            </a-input-password>
-          </a-form-item>
-          <a-form-item field="re_password" label="确认密码" :rules="[{required:true,message:'请确认密码'},{validator:rePasswordValidator}]"
-                       :validate-trigger="['blur']">
-            <a-input-password v-model="form.re_password" placeholder="请确认密码" allow-clear>
-              <template #prefix>
-                <icon-lock class="input-icon" />
-              </template>
-            </a-input-password>
-          </a-form-item>
-          <a-form-item field="gender" label="性别" :rules="[{required:true,message:'请选择性别'}]"
-                       :validate-trigger="['blur']">
-            <a-radio-group v-model="form.gender" type="button">
-              <a-radio v-for="item in genderStrings" :value="item.value">
-                  {{ item.label }}
-              </a-radio>
-            </a-radio-group>
-          </a-form-item>
-          <a-form-item field="tel" label="手机号" :rules="[{required:true,message:'请输入手机号'}]"
-                       :validate-trigger="['blur']">
-            <a-input placeholder="请输入手机号" v-model="form.tel" max-length="11" allow-clear>
-              <template #prefix>
-                <icon-phone class="input-icon" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item field="email" label="邮箱">
-            <a-input placeholder="请输入邮箱" v-model="form.email" type="email" allow-clear>
-              <template #prefix>
-                <icon-email class="input-icon" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item field="status" label="状态" :rules="[{required:true,message:'请选择状态'}]"
-                       :validate-trigger="['blur']">
-            <a-select placeholder="请选择状态" disabled :options="statusOptions" v-model="form.status">
-              <template #prefix>
-                <icon-check-circle class="input-icon" />
-              </template>
-            </a-select>
-          </a-form-item>
-          <a-form-item field="roleId" label="角色" :rules="[{required:true,message:'请选择角色'}]"
-                       :validate-trigger="['blur']">
-            <a-select placeholder="请选择角色" :options="roleList" :field-names="fieldNames" v-model="form.roleId">
-              <template #prefix>
-                <icon-check-circle class="input-icon" />
-              </template>
-            </a-select>
-          </a-form-item>
-
-        </a-form>
-      </a-modal>
+      <user_create v-model:visible="visible" @ok="createOk" v-model:role-list="roleList"></user_create>
       <div class="table-wrapper">
         <gvb_table :url="getUserList" :columns="columns"
                    :page-size="8" add-label="创建用户"
@@ -106,22 +22,12 @@
 
 <script setup lang="ts">
 import Gvb_table from "@/components/admin/gvb_table.vue";
-import {getUserList, userCreateApi, type userCreateType, type userInfoType} from "@/api/user_api.ts";
+import {getUserList,  type userInfoType} from "@/api/user_api.ts";
 import type {optionType} from "@/components/admin/gvb_table.vue";
 import {reactive, ref} from "vue";
-import {
-  IconUser,
-  IconUserGroup,
-  IconLock,
-  IconMan,
-  IconWoman,
-  IconPhone,
-  IconEmail,
-  IconCheckCircle
-} from '@arco-design/web-vue/es/icon';
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
-import {Message} from "@arco-design/web-vue";
 import {getRoleList, type roleType} from "@/api/role_api.ts";
+import User_create from "@/components/admin/user_create.vue";
 const visible = ref(false)
 const columns = [
   {
@@ -172,90 +78,8 @@ const actionGroupOptions:optionType[] = [
       return true;
     }}
 ]
-
-const formRef = ref()
-/* form表单 */
-const form = reactive<userCreateType&{re_password:string}&{avatar:string}>({
-  userName:"",
-  nickName:"",
-  password:"",
-  realName:"",
-  gender:"1",
-  tel:"",
-  email:"",
-  status:"0",
-  re_password:"",
-  avatar:"https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp",
-  roleId:undefined
-})
-const defaultForm = {
-  userName:"",
-  nickName:"",
-  password:"",
-  realName:"",
-  gender:"1",
-  tel:"",
-  email:"",
-  status:"0",
-  re_password:"",
-  avatar:"https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-}
-// 性别组
-const genderStrings = reactive([
-      {
-        label:'男',
-        value:'0',
-      },
-      {
-        label:'女生',
-        value:'1',
-      },
-      {
-        label: '不愿透露',
-        value:'2',
-      }
-    ]
-)
-// 状态组
-const statusOptions = [
-  {
-    label:'正常',
-    value:'0',
-  },
-  {
-    label:'停用',
-    value:'1',
-  },
-  {
-    label:'异常',
-    value:'2',
-  }
-]
 const gvbTable = ref()
-/* createUser 表单校验*/
-const  createUser = async () => {
-  let val = await formRef.value.validate()
-  console.log(val)
-  if (val) {
-    return false
-  }
-  let res = await userCreateApi(form)
-  console.log(res)
-  if (res.code !== 200){
-    if (res.code === 602){
-      Message.warning(res.msg)
-      return
-    }
-    Message.error(res.msg)
-    return
-  }
-  Message.success(res.msg)
-  visible.value = false
-  gvbTable.value.getList()
-  Object.assign(form,defaultForm)
-  return true
-}
-const fieldNames = {value:'roleId',label:'roleName'}
+
 const roleList= reactive<roleType[]>([])
 /* 打开弹窗 */
 const openModal = async () => {
@@ -265,20 +89,7 @@ const openModal = async () => {
   visible.value = true
   console.log(roleList)
 }
-/* cancelUser 取消表单 */
-const cancelUser = () =>{
-  Object.assign(form,defaultForm)
-  visible.value = false
-  return true
-}
-//  密码校验
-const rePasswordValidator = (value:string,callback:(error?:string) =>void):void=>{
-  if(value !== form.password) return callback("确认密码不一致")
-}
-/* 新增 */
-const add = (record:userInfoType) =>{
-  console.log('add',record)
-}
+
 /* 修改 */
 const edit = (record:userInfoType) =>{
   console.log(record)
@@ -306,6 +117,9 @@ const getStatusText = (status: string) => {
   };
   return statusMap[status] || '未知';
 };
+const createOk = () => {
+  gvbTable.value.getList()
+}
 </script>
 
 <style scoped>
