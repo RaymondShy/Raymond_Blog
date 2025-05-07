@@ -61,3 +61,14 @@ export interface userCreateType {
 export function userCreateApi(data:userCreateType):Promise<baseResponse<string>> {
     return useAxios.post(`/api/system/${data.roleId}`,data)
 }
+
+
+export interface userUpdateType {
+    userId:number,
+    status:string,
+    roleId:number,
+}
+// 修改用户
+export function userUpdateApi(data:userUpdateType):Promise<baseResponse<string>> {
+    return useAxios.put('/api/system/',data)
+}

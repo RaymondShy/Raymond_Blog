@@ -3,6 +3,27 @@
     <gvb_bread_crumb/>
     <div class="user-list-container">
       <user_create v-model:visible="visible" @ok="createOk" v-model:role-list="roleList"></user_create>
+      <a-modal title="修改用户" v-model:visible="updateVisible" :on-before-ok="updateOk">
+        <a-form ref="formRef" :model="updateForm" :label-col-props="{ span: 6 }"
+                :wrapper-col-props="{ span: 18 }" class="user-form">
+          <a-form-item field="status" label="状态" :rules="[{required:true,message:'请选择状态'}]"
+                       :validate-trigger="['blur']">
+            <a-select placeholder="请选择状态" :options="statusOptions" v-model="updateForm.status">
+              <template #prefix>
+                <icon-check-circle class="input-icon" />
+              </template>
+            </a-select>
+          </a-form-item>
+          <a-form-item field="roleId" label="角色" :rules="[{required:true,message:'请选择角色'}]"
+                       :validate-trigger="['blur']">
+            <a-select placeholder="请选择角色" :options="roleList" :field-names="fieldNames" v-model="updateForm.roleId">
+              <template #prefix>
+                <icon-check-circle class="input-icon" />
+              </template>
+            </a-select>
+          </a-form-item>
+        </a-form>
+      </a-modal>
       <div class="table-wrapper">
         <gvb_table :url="getUserList" :columns="columns"
                    :page-size="8" add-label="创建用户"
@@ -22,12 +43,14 @@
 
 <script setup lang="ts">
 import Gvb_table from "@/components/admin/gvb_table.vue";
-import {getUserList,  type userInfoType} from "@/api/user_api.ts";
+import {getUserList, userCreateApi, type userInfoType, userUpdateApi, type userUpdateType} from "@/api/user_api.ts";
 import type {optionType} from "@/components/admin/gvb_table.vue";
 import {reactive, ref} from "vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import {getRoleList, type roleType} from "@/api/role_api.ts";
 import User_create from "@/components/admin/user_create.vue";
+import {IconCheckCircle} from "@arco-design/web-vue/es/icon";
+import {Message} from "@arco-design/web-vue";
 const visible = ref(false)
 const columns = [
   {
@@ -72,6 +95,22 @@ const columns = [
     slotName:'action'
   }
 ]
+// 状态组
+const statusOptions = [
+  {
+    label:'正常',
+    value:'0',
+  },
+  {
+    label:'停用',
+    value:'1',
+  },
+  {
+    label:'异常',
+    value:'2',
+  }
+]
+const fieldNames = {value:'roleId',label:'roleName'}
 /* 操作组 */
 const actionGroupOptions:optionType[] = [
   {label:'批量拉黑',callback: async (idList:(number|string)[]):Promise<boolean> =>{
@@ -89,10 +128,44 @@ const openModal = async () => {
   visible.value = true
   console.log(roleList)
 }
-
+// 修改用户
+const updateVisible = ref(false)
+const updateForm = reactive<userUpdateType>({
+  userId:0,
+  roleId:0,
+  status:''
+})
 /* 修改 */
-const edit = (record:userInfoType) =>{
+const formRef = ref()
+const edit = async (record:userInfoType& { roleId: number }) =>{
+  const res = await getRoleList()
+  let roleList2 = res.data
+  Object.assign(roleList, roleList2)
+  updateForm.userId = record.userId
+  updateForm.roleId = record.roleId
+  updateForm.status = record.status
+  updateVisible.value = true
   console.log(record)
+}
+const updateOk = async () =>{
+  let val = await formRef.value.validate()
+  console.log(val)
+  if (val) {
+    return false
+  }
+  let res = await userUpdateApi(updateForm)
+  console.log(res)
+  if (res.code !== 200){
+    if (res.code === 602){
+      Message.warning(res.msg)
+      return
+    }
+    Message.error(res.msg)
+    return
+  }
+  Message.success(res.msg)
+  gvbTable.value.getList()
+  return true
 }
 /* 删除 */
 const remove = (idList: number[]) =>{
@@ -120,6 +193,7 @@ const getStatusText = (status: string) => {
 const createOk = () => {
   gvbTable.value.getList()
 }
+
 </script>
 
 <style scoped>
