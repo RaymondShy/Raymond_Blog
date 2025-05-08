@@ -44,31 +44,37 @@ const gvbTable = ref()
 </script>
 
 <template>
-  <div class="gvb_menu">
+  <div >
     <gvb_bread_crumb/>
-    <gvb_table :url="getMenuList" :columns="columns"
-               :page-size="8" add-label="创建用户"
-               default-delete
-               no-action-group
-               no-check
-               no-page
-               @add="visible = true" @edit="edit"
-               ref="gvbTable">
-      <template #carouselList="{record}:{record:menuType}">
-        <div class="menu_column_view">
-          <a-image v-for="item in record.carouselList"
-                   height="30"
-                   :key="item.carouselId"
-                   :src="item.imageUrl"
-          />
-        </div>
-      </template>
-    </gvb_table>
+    <div class="gvb_menu">
+      <gvb_table :url="getMenuList" :columns="columns"
+                 :page-size="8" add-label="创建用户"
+                 default-delete
+                 no-action-group
+                 no-check
+                 no-page
+                 @add="visible = true" @edit="edit"
+                 ref="gvbTable">
+        <template #carouselList="{record}:{record:menuType}">
+          <div class="menu_column_view">
+            <a-image v-for="item in record.carouselList"
+                     height="30"
+                     :key="item.carouselId"
+                     :src="item.imageUrl"
+            />
+          </div>
+        </template>
+      </gvb_table>
+    </div>
+
   </div>
 </template>
 
 <style scoped lang="scss">
 .gvb_menu{
+  min-height: 100%;
+  padding: 16px 20px;
+  background-color: var(--color-bg-2);
   .menu_column_view{
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
