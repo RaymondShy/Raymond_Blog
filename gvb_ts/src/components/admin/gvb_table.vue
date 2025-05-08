@@ -1,7 +1,6 @@
 <template>
   <div class="gvb_table">
     <div class="gvb_table_header">
-      <div class="gvb_table_title">查询表格</div>
       <div class="header_actions">
                 <a-dropdown trigger="hover" class="export-dropdown">
                   <a-button type="outline">
@@ -138,6 +137,9 @@
               <template #cell="{record}" v-else-if="item.slotName === 'registerTime'">
                 <span class="time-text">{{ relativeCurrentTime(record.registerTime) }}</span>
               </template>
+              <template #cell="{record}" v-else-if="item.slotName === 'createTime'">
+                <span class="time-text">{{ relativeCurrentTime(record.createTime) }}</span>
+              </template>
               <template v-else #cell="{record}">
                 <slot :name="item.slotName" :record="record"></slot>
               </template>
@@ -152,6 +154,7 @@
         已选 {{selectedKeys.length}} 项
       </div>
       <a-pagination
+          v-if="!props.noPage"
           :total="data.total"
           @change="pageChange"
           v-model:current="params.pageNum"
@@ -188,6 +191,7 @@ interface Props{
   noActionGroup?:boolean, // 不启用操作组
   actionGroupOptions?:optionType[],
   noCheck?:boolean,
+  noPage?:boolean,
 }
 
 const props = defineProps<Props>()
