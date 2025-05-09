@@ -4,6 +4,7 @@ import Gvb_table from "@/components/admin/gvb_table.vue";
 import {getMenuList, type menuType} from "@/api/menu_api.ts";
 import {ref} from "vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
+import Menu_create from "@/components/admin/menu_create.vue";
 const columns = [
   {
     title: '首页标题',
@@ -46,13 +47,13 @@ const gvbTable = ref()
 <template>
   <div >
     <gvb_bread_crumb/>
+    <menu_create v-model:visible="visible"/>
     <div class="gvb_menu">
       <gvb_table :url="getMenuList" :columns="columns"
-                 :page-size="8" add-label="创建用户"
+                 :page-size="8" add-label="创建菜单"
                  default-delete
                  no-action-group
                  no-check
-                 no-page
                  @add="visible = true" @edit="edit"
                  ref="gvbTable">
         <template #carouselList="{record}:{record:menuType}">

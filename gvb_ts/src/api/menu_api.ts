@@ -23,3 +23,22 @@ export interface menuType{
 export function getMenuList(params:paramsType):Promise<baseResponse<listDataType<menuType>>> {
     return useAxios.get("/api/system/menu/search", {params})
 }
+
+export interface menuCreateRequest{
+    menuName:string
+    slogan:string
+    menuAbstract:string
+    menuOrderNum:number
+    abstractT:number
+    status:string
+    menuUrl:string
+    idList:number[] | []
+}
+
+/**
+ * 新增菜单数据
+ * @param data 菜单请求数据
+ */
+export function createMenuApi(data:menuCreateRequest) :Promise<baseResponse<string>>{
+    return useAxios.post(`/api/system/menu/${data.idList}`,data)
+}

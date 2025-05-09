@@ -66,21 +66,21 @@
           </a-space>
         </div>
 
-        <div class="filter_selectors" v-if="filterGroup.length">
-          <a-select
-              v-for="item in filterGroup"
-              :key="item.value"
-              :placeholder="item.label"
-              style="width: 150px"
-              @change="filterChange(item,$event)"
-              :options="item.options"
-              class="filter-select"
-          >
-            <template #prefix>
-              <icon-filter />
-            </template>
-          </a-select>
-        </div>
+<!--        <div class="filter_selectors" v-if="filterGroup.length">-->
+<!--          <a-select-->
+<!--              v-for="item in filterGroup"-->
+<!--              :key="item.value"-->
+<!--              :placeholder="item.label"-->
+<!--              style="width: 150px"-->
+<!--              @change="filterChange(item,$event)"-->
+<!--              :options="item.options"-->
+<!--              class="filter-select"-->
+<!--          >-->
+<!--            <template #prefix>-->
+<!--              <icon-filter />-->
+<!--            </template>-->
+<!--          </a-select>-->
+<!--        </div>-->
 
         <slot name="action_other_search"></slot>
       </div>
