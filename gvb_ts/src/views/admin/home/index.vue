@@ -77,23 +77,7 @@
                                   </a-tooltip>
                                 </div>
               </div>
-<!--              <div class="profile-badges">-->
-<!--                <div class="badges-row">-->
-<!--                  <a-tooltip content="活跃之星：连续活跃30天">-->
-<!--                    <div class="badge-circle badge-active"><icon-bulb /></div>-->
-<!--                  </a-tooltip>-->
-<!--                  <a-tooltip content="优质作者：优质文章10篇">-->
-<!--                    <div class="badge-circle badge-author"><icon-file /></div>-->
-<!--                  </a-tooltip>-->
-<!--                  <a-tooltip content="AI达人：AI问答100次">-->
-<!--                    <div class="badge-circle badge-ai"><icon-robot /></div>-->
-<!--                  </a-tooltip>-->
-<!--                </div>-->
-<!--                <div class="profile-middle">-->
-<!--                  <div class="profile-motto">"让代码改变世界"</div>-->
-<!--                  <div class="profile-growth">成长值 <span class="growth-num">1280</span></div>-->
-<!--                </div>-->
-<!--              </div>-->
+
             </div>
           </section>
           <section class="info-block info-expert">
@@ -194,7 +178,7 @@
     </div>
 
     <!-- AI智慧问答 Modal弹窗 -->
-    <a-modal v-model:visible="openAI" :width="isMobile ? '98vw' : 480" :footer="false" :closable="true" :mask-closable="true" :title="'AI 智慧问答'" class="ai-modal" :body-style="{padding: '0'}">
+    <a-modal v-model:visible="openAI" :width="isMobile ? '98vw' : 960"   :contentStyle="{ height: '900px' }" :footer="false" :closable="true" :mask-closable="true" :title="'AI 智慧问答'" class="ai-modal" :body-style="{padding: '0'}">
       <div class="ai-float-header">
         <a-tabs v-model:active-key="aiModel" type="rounded" size="small">
           <a-tab-pane key="deepseek" title="DeepSeek" />
@@ -241,6 +225,7 @@ import {
   IconIdcard,
   IconStar
 } from '@arco-design/web-vue/es/icon'
+import {getChatMessage} from "@/api/chat_api.ts";
 
 const todayStr = computed(() => {
   const d = new Date()
@@ -304,28 +289,70 @@ function clearAIHistory() {
 }
 
 async function sendAIMessage() {
-  if (!aiInput.value || aiLoading.value) return
-  aiHistory.value.push({ role: 'user', content: aiInput.value })
-  const userMsg = aiInput.value
-  aiInput.value = ''
-  aiLoading.value = true
-  // 预留API调用位置
-  let aiReply = ''
-  if (aiModel.value === 'deepseek') {
-    // await deepseekApi(userMsg)
-    aiReply = `DeepSeek已收到："${userMsg}"`
-  } else {
-    // await chatgptApi(userMsg)
-    aiReply = `ChatGPT已收到："${userMsg}"`
-  }
-  setTimeout(() => {
-    aiHistory.value.push({ role: 'bot', content: aiReply })
-    aiLoading.value = false
+  if (!aiInput.value || aiLoading.value) return;
+
+  // 添加用户消息
+  aiHistory.value.push({ role: 'user', content: aiInput.value });
+  const userMsg = aiInput.value;
+  aiInput.value = '';
+  aiLoading.value = true;
+
+  try {
+
+    // 调用API获取响应
+    const fullResponse = await getChatMessage(userMsg);
+
+    // 创建AI回复消息对象（初始为空）
+    const aiReply = { role: 'bot', content: '' };
+    aiHistory.value.push(aiReply);  // 将空消息加入到历史中
+
+    // 模拟逐字输出效果
+    let currentIndex = 0;
+    const delay = 50; // 每个字符的渲染间隔(ms)
+
+    const renderChar = () => {
+      if (currentIndex < fullResponse.length) {
+        // 每次渲染一个字符
+        aiReply.content += fullResponse.charAt(currentIndex);
+        currentIndex++;
+
+        // 更新aiHistory，确保视图能够更新
+        aiHistory.value = [...aiHistory.value];  // 强制Vue重新渲染
+
+        // 自动滚动到底部
+        nextTick(() => {
+          const chatArea = document.querySelector('.ai-chat-area');
+          if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+        });
+
+        // 继续渲染下一个字符
+        setTimeout(renderChar, delay);
+      } else {
+        // 渲染完成
+        aiLoading.value = false;
+        nextTick(() => {
+          aiInputRef.value?.focus();
+        });
+      }
+    };
+
+    // 开始逐字渲染
+    renderChar();
+
+  } catch (error) {
+    console.error('AI请求失败:', error);
+    aiHistory.value.push({
+      role: 'bot',
+      content: '抱歉，AI服务暂时不可用，请稍后再试。'
+    });
+    aiLoading.value = false;
     nextTick(() => {
-      aiInputRef.value?.focus()
-    })
-  }, 1000)
+      aiInputRef.value?.focus();
+    });
+  }
 }
+
+
 
 // mock活跃日历数据
 const calendarData = ref([] as { date: string, count: number }[])

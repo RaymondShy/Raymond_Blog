@@ -42,12 +42,15 @@ const columns = [
 const visible = ref(false)
 const edit = (record:menuType) =>{}
 const gvbTable = ref()
+const okSuccess = () =>{
+  gvbTable.value.getList()
+}
 </script>
 
 <template>
   <div >
     <gvb_bread_crumb/>
-    <menu_create v-model:visible="visible"/>
+    <menu_create v-model:visible="visible" @ok="okSuccess"/>
     <div class="gvb_menu">
       <gvb_table :url="getMenuList" :columns="columns"
                  :page-size="8" add-label="创建菜单"
