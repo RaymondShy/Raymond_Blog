@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import Gvb_table from "@/components/admin/gvb_table.vue";
-import {getMenuList, type menuType} from "@/api/menu_api.ts";
-import {ref} from "vue";
+import {getMenuList, type menuCreateRequest, type menuType} from "@/api/menu_api.ts";
+import {reactive, ref} from "vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import Menu_create from "@/components/admin/menu_create.vue";
 const columns = [
@@ -40,24 +40,57 @@ const columns = [
   }
 ]
 const visible = ref(false)
-const edit = (record:menuType) =>{}
 const gvbTable = ref()
 const okSuccess = () =>{
   gvbTable.value.getList()
+}
+const defaultMenuForm = reactive<menuCreateRequest>({
+  menuName:'',
+  slogan:'',
+  menuAbstract:'',
+  menuOrderNum:0,
+  abstractT:7,
+  status:'',
+  menuUrl:'',
+  idList:[],
+})
+const recordData = reactive<menuCreateRequest>({
+  menuName:'',
+  slogan:'',
+  menuAbstract:'',
+  menuOrderNum:0,
+  abstractT:7,
+  status:'',
+  menuUrl:'',
+  idList:[],
+})
+
+/* 编辑菜单 */
+const edit = (record:menuCreateRequest)=>{
+  Object.assign(recordData,record)
+  title.value = '修改菜单'
+  visible.value = true
+}
+const title = ref('')
+/* 新增菜单 */
+const add = () =>{
+  Object.assign(recordData,defaultMenuForm)
+  title.value = ''
+  visible.value = true
 }
 </script>
 
 <template>
   <div >
     <gvb_bread_crumb/>
-    <menu_create v-model:visible="visible" @ok="okSuccess"/>
+    <menu_create :title="title" v-model:visible="visible" @ok="okSuccess" :record="recordData"/>
     <div class="gvb_menu">
       <gvb_table :url="getMenuList" :columns="columns"
                  :page-size="8" add-label="创建菜单"
                  default-delete
                  no-action-group
                  no-check
-                 @add="visible = true" @edit="edit"
+                 @add="add" @edit="edit"
                  ref="gvbTable">
         <template #carouselList="{record}:{record:menuType}">
           <div class="menu_column_view">

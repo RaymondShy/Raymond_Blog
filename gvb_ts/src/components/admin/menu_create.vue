@@ -3,12 +3,12 @@ import {reactive, ref} from "vue";
 import {createMenuApi, type menuCreateRequest} from "@/api/menu_api.ts";
 import {type carouselImageType, getCarouselImageNameList} from "@/api/carousel_api.ts";
 import {Message} from "@arco-design/web-vue";
-
-const props = defineProps({
-  visible:{
-    type:Boolean
-  }
-})
+interface Props {
+  visible: boolean
+  record: menuCreateRequest
+  title?:string
+}
+const props = defineProps<Props>()
 const emits = defineEmits(['update:visible','ok'])
 const formRef = ref()
 const form = reactive<menuCreateRequest>({
@@ -41,11 +41,20 @@ const okHandle = async () =>{
   emits('update:visible',false)
   emits('ok')
 }
+/* 菜单打开之前的操作 */
+const beforeOpen = ()=>{
+  Object.assign(form,props.record)
+  const carouselIdList = []
+  for (let item of props.record.idList){
+    carouselIdList.push(item)
+  }
+  form.idList = carouselIdList
+}
 </script>
 
 <template>
   <div>
-    <a-modal title="创建菜单" :visible="props.visible" @cancel="emits('update:visible',false)" :on-before-ok="okHandle">
+    <a-modal :title="props.title||'创建菜单'" :visible="props.visible" @cancel="emits('update:visible',false)" @beforeOpen="beforeOpen" :on-before-ok="okHandle">
       <a-form ref="formRef" :model="form" :label-col-props="{ span: 6 }"
               :wrapper-col-props="{ span: 18 }" class="user-form">
         <a-form-item field="menuName" label="菜单标题" :rules="[{required:true,message:'请输入菜单标题'}]"
