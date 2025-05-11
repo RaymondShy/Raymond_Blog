@@ -33,6 +33,7 @@ export interface menuCreateRequest{
     status:string
     menuUrl:string
     idList:number[] | []
+    menuId?:number
 }
 
 /**
@@ -41,4 +42,11 @@ export interface menuCreateRequest{
  */
 export function createMenuApi(data:menuCreateRequest) :Promise<baseResponse<string>>{
     return useAxios.post(`/api/system/menu/${data.idList}`,data)
+}
+
+/**
+ * 修改菜单
+ */
+export function updateMenuApi(idList:number[],data:menuCreateRequest) :Promise<baseResponse<string>>{
+    return useAxios.put(`/api/system/menu/${idList}`,data)
 }

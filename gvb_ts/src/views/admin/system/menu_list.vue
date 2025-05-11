@@ -63,19 +63,23 @@ const recordData = reactive<menuCreateRequest>({
   status:'',
   menuUrl:'',
   idList:[],
+  menuId:0
 })
 
 /* 编辑菜单 */
 const edit = (record:menuCreateRequest)=>{
   Object.assign(recordData,record)
   title.value = '修改菜单'
+  console.log(recordData)
   visible.value = true
 }
 const title = ref('')
 /* 新增菜单 */
 const add = () =>{
   Object.assign(recordData,defaultMenuForm)
+  recordData.menuId = 0
   title.value = ''
+  console.log(recordData)
   visible.value = true
 }
 </script>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-import {createMenuApi, type menuCreateRequest} from "@/api/menu_api.ts";
+import {createMenuApi, type menuCreateRequest, updateMenuApi} from "@/api/menu_api.ts";
 import {type carouselImageType, getCarouselImageNameList} from "@/api/carousel_api.ts";
 import {Message} from "@arco-design/web-vue";
+import type {baseResponse} from "@/api";
 interface Props {
   visible: boolean
   record: menuCreateRequest
@@ -20,6 +21,7 @@ const form = reactive<menuCreateRequest>({
   status:'',
   menuUrl:'',
   idList:[],
+  menuId:0
 })
 // 轮播图名称列表初始化
 const carouselNames = ref<carouselImageType[]>([])
@@ -32,12 +34,17 @@ getCarouselList()
 const okHandle = async () =>{
   let val = await formRef.value.validate();
   if(val) return;
-  console.log(form)
-  let res = await createMenuApi(form)
+  let res:baseResponse<string> = {}
+  if (props.record.menuId){
+    res = await updateMenuApi(form.idList,form)
+  }else{
+    console.log("123nvwon")
+    res = await createMenuApi(form);
+  }
   if (res.code !== 200){
     Message.error(res.msg)
   }
-  Message.success('新增菜单数据成功')
+  Message.success(res.msg)
   emits('update:visible',false)
   emits('ok')
 }
@@ -45,8 +52,10 @@ const okHandle = async () =>{
 const beforeOpen = ()=>{
   Object.assign(form,props.record)
   const carouselIdList = []
-  for (let item of props.record.idList){
-    carouselIdList.push(item)
+  if (props.record.menuId){
+    for (let item of props.record.idList){
+      carouselIdList.push(item)
+    }
   }
   form.idList = carouselIdList
 }
