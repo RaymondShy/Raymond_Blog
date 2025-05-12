@@ -95,6 +95,7 @@ const add = () =>{
                  no-action-group
                  no-check
                  @add="add" @edit="edit"
+                 @remove="remove"
                  ref="gvbTable">
         <template #carouselList="{record}:{record:menuType}">
           <div class="menu_column_view">
