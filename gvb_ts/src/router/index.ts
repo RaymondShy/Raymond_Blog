@@ -130,7 +130,15 @@ const router = createRouter({
                 title:'Menu list'
               },
               component: () => import('../views/admin/system/menu_list.vue'),
-            }
+            },
+            {
+              path: "promotion_list",
+              name: "promotion_list",
+              meta: {
+                title:'Promotion list'
+              },
+              component: () => import('../views/admin/system/promotion_list.vue'),
+            },
           ]
         },
         {
