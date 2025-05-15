@@ -17,36 +17,36 @@ export function relativeCurrentTime(date: string){
  * @param timestamp 时间戳或ISO格式时间字符串
  * @returns 格式化后的时间字符串
  */
-export function formatTime(timestamp: string | Date): string {
-    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
-    const now = new Date()
-
-    // 计算时间差（毫秒）
-    const diff = now.getTime() - date.getTime()
-
-    // 今天的时间显示格式
-    if (isToday(date)) {
-        return formatHourMinute(date)
-    }
-
-    // 昨天的时间显示格式
-    if (isYesterday(date)) {
-        return `昨天 ${formatHourMinute(date)}`
-    }
-
-    // 本周内的时间显示格式
-    if (isThisWeek(date)) {
-        return `${getWeekday(date)} ${formatHourMinute(date)}`
-    }
-
-    // 今年的时间显示格式
-    if (isThisYear(date)) {
-        return `${formatMonthDay(date)} ${formatHourMinute(date)}`
-    }
-
-    // 其他时间显示完整日期
-    return `${formatYearMonthDay(date)} ${formatHourMinute(date)}`
-}
+// export function formatTime(timestamp: string | Date): string {
+//     const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
+//     const now = new Date()
+//
+//     // 计算时间差（毫秒）
+//     const diff = now.getTime() - date.getTime()
+//
+//     // 今天的时间显示格式
+//     if (isToday(date)) {
+//         return formatHourMinute(date)
+//     }
+//
+//     // 昨天的时间显示格式
+//     if (isYesterday(date)) {
+//         return `昨天 ${formatHourMinute(date)}`
+//     }
+//
+//     // 本周内的时间显示格式
+//     if (isThisWeek(date)) {
+//         return `${getWeekday(date)} ${formatHourMinute(date)}`
+//     }
+//
+//     // 今年的时间显示格式
+//     if (isThisYear(date)) {
+//         return `${formatMonthDay(date)} ${formatHourMinute(date)}`
+//     }
+//
+//     // 其他时间显示完整日期
+//     return `${formatYearMonthDay(date)} ${formatHourMinute(date)}`
+// }
 
 /**
  * 判断是否是今天

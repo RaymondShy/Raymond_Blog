@@ -141,7 +141,7 @@
                 <span class="time-text">{{ relativeCurrentTime(record.createTime) }}</span>
               </template>
               <template #cell="{record}" v-else-if="item.slotName === 'updateTime'">
-                <span class="time-text">{{ formatTime(record.updateTime) }}</span>
+                <span class="time-text">{{ dateFormat(record.updateTime) }}</span>
               </template>
               <template v-else #cell="{record}">
                 <slot :name="item.slotName" :record="record"></slot>
@@ -176,7 +176,7 @@ import {type Component, reactive, ref} from "vue";
 import type {baseResponse, listDataType, paramsType} from "@/api";
 import type {TableColumnData, TableData} from "@arco-design/web-vue/es/table/interface";
 import {defaultDeleteApi, type userInfoType} from "@/api/user_api.ts";
-import {formatTime, relativeCurrentTime} from "../../utils/date.ts";
+import {dateFormat, formatTime, relativeCurrentTime} from "../../utils/date.ts";
 import {Message} from "@arco-design/web-vue";
 
 const selectedKeys = ref<number[] | string[]>([]);
@@ -217,6 +217,7 @@ const getList = async () => {
   loading.value = true;
   try {
     let res = await props.url(params)
+    console.log(res)
     data.records = res.data.records
     data.total = res.data.total
   } finally {

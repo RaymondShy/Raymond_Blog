@@ -8,14 +8,14 @@ export interface carouselImageType{
 }
 
 export interface promotionType{
-    carouselId:number
+    carouselId:number|undefined
     imageUrl:string
     carouselTitle:string
     linkUrl:string
-    sortOrderNum:string
+    sortOrderNum:number
     status:string
     carouselTime:number
-    updateTime:string
+    updateTime?:string
 }
 
 export function getCarouselImageNameList():Promise<baseResponse<carouselImageType[]>>{
@@ -24,4 +24,18 @@ export function getCarouselImageNameList():Promise<baseResponse<carouselImageTyp
 
 export function getPromotionApi(params:paramsType):Promise<baseResponse<listDataType<promotionType>>> {
     return useAxios.get("/api/system/carousel/search", {params:params})
+}
+
+/**
+ * 创建推广
+ */
+export function createPromotionApi(data:promotionType):Promise<baseResponse<string>>{
+    return useAxios.post("/api/system/carousel",data)
+}
+
+/**
+ * 修改推广
+ */
+export function updatePromotionApi(data:promotionType):Promise<baseResponse<string>> {
+    return useAxios.put("/api/system/carousel",data)
 }
