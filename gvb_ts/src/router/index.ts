@@ -139,6 +139,25 @@ const router = createRouter({
               },
               component: () => import('../views/admin/system/promotion_list.vue'),
             },
+            {
+              path:"system_config",
+              name:"system_config",
+              meta:{
+                title:'系统配置'
+              },
+              redirect:'/admin/system/system_config/site_config',
+              component: () => import('../views/admin/system/system_config.vue'),
+              children:[
+                {
+                  path: "site_config",
+                  name: "site_config",
+                  meta: {
+                    title:'Web config'
+                  },
+                  component: () => import('../views/admin/system/site/config_site.vue'),
+                },
+              ]
+            }
           ]
         },
         {

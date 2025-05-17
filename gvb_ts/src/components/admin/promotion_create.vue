@@ -7,6 +7,7 @@ import {
 } from "@/api/carousel_api.ts";
 import {Message} from "@arco-design/web-vue";
 import type {baseResponse} from "@/api";
+import Gvb_upload_image from "@/components/admin/gvb_upload_image.vue";
 interface Props {
   visible: boolean
   record: promotionType
@@ -62,7 +63,7 @@ const beforeOpen = ()=>{
         </a-form-item>
         <a-form-item field="imageUrl" label="图片路径" :rules="[{required:true,message:'请输入图片访问路径'}]"
                      :validate-trigger="['blur']">
-          <a-input placeholder="请输入图片访问路径" v-model="form.imageUrl" allow-clear/>
+          <gvb_upload_image v-model="form.imageUrl"/>
         </a-form-item>
         <a-form-item field="sortOrderNum" label="排序编号">
           <a-input-number placeholder="请输入排序编号" v-model="form.sortOrderNum" allow-clear/>

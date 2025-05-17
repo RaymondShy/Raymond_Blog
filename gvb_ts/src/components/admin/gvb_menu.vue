@@ -79,6 +79,7 @@ const menuList:MenuType[] = [
     key: "6", title: "System management\n", icon: IconUser, name: "system", child: [
       {key: "6-1", title: "Menu list", icon: IconUser, name: "menu_list"},
       {key: "6-2", title: "Promotion list", icon: IconUser, name: "promotion_list"},
+      {key: "6-3", title: "System config", icon: IconUser, name: "system_config"},
     ]
   }
 
