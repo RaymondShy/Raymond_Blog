@@ -5,7 +5,7 @@
 <template>
   <div class="system-config">
     <div class="system-config-left">
-      <router-link :to="{name:'site_config'}">网站配置</router-link>
+      <router-link :to="{name:'site_config'}">站点配置</router-link>
       <router-link :to="{name:'email_config'}">邮箱配置</router-link>
       <router-link :to="{name:'oss_config'}">OSS配置</router-link>
       <router-link :to="{name:'qq_config'}">QQ配置</router-link>
