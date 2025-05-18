@@ -6,10 +6,10 @@
   <div class="system-config">
     <div class="system-config-left">
       <router-link :to="{name:'site_config'}">网站配置</router-link>
-      <a>邮箱设置</a>
-      <a>七牛云设置</a>
-      <a>QQ设置</a>
-      <a>JWT设置</a>
+      <router-link :to="{name:'email_config'}">邮箱配置</router-link>
+      <router-link :to="{name:'oss_config'}">OSS配置</router-link>
+      <router-link :to="{name:'qq_config'}">QQ配置</router-link>
+      <router-link :to="{name:'jwt_config'}">JWT配置</router-link>
     </div>
     <div class="system-config-right">
       <router-view/>

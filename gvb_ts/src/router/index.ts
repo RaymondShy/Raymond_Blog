@@ -152,9 +152,41 @@ const router = createRouter({
                   path: "site_config",
                   name: "site_config",
                   meta: {
-                    title:'Web config'
+                    title:'Site configuration'
                   },
                   component: () => import('../views/admin/system/site/config_site.vue'),
+                },
+                {
+                  path: "qq_config",
+                  name: "qq_config",
+                  meta: {
+                    title:'QQ configuration'
+                  },
+                  component: () => import('../views/admin/system/site/config_qq.vue'),
+                },
+                {
+                  path: "jwt_config",
+                  name: "jwt_config",
+                  meta: {
+                    title:'JWT configuration'
+                  },
+                  component: () => import('../views/admin/system/site/config_jwt.vue'),
+                },
+                {
+                  path: "oss_config",
+                  name: "oss_config",
+                  meta: {
+                    title:'OSS configuration'
+                  },
+                  component: () => import('../views/admin/system/site/config_qq.vue'),
+                },
+                {
+                  path: "email_config",
+                  name: "email_config",
+                  meta: {
+                    title:'Email configuration'
+                  },
+                  component: () => import('../views/admin/system/site/config_email.vue'),
                 },
               ]
             }

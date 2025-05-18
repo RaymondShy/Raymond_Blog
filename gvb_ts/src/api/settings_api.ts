@@ -1,0 +1,18 @@
+export interface settingsType{
+    addr: string,
+    beiAn: string,
+    bilibiliUrl: string,
+    createdAt: string,
+    email: string,
+    giteeUrl: string,
+    githubUrl: string,
+    job: string,
+    name: string,
+    qqImage: string,
+    slogan: string,
+    sloganEn: string,
+    title: string,
+    version: string,
+    web: string,
+    wechatImage:string,
+}
