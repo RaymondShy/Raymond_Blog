@@ -178,7 +178,7 @@ const router = createRouter({
                   meta: {
                     title:'OSS configuration'
                   },
-                  component: () => import('../views/admin/system/site/config_qq.vue'),
+                  component: () => import('../views/admin/system/site/config_oss.vue'),
                 },
                 {
                   path: "email_config",

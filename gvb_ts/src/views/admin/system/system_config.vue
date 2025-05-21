@@ -12,7 +12,12 @@
       <router-link :to="{name:'jwt_config'}">JWT配置</router-link>
     </div>
     <div class="system-config-right">
-      <router-view/>
+      <!-- 内容部分添加过渡 -->
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
   </div>
 </template>
@@ -54,6 +59,15 @@
     border-radius: 5px;
     margin-left: 20px;
     background-color: var(--color-bg-2);
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 更自然的缓动 */
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+      opacity: 0;
+    }
   }
 }
 </style>

@@ -105,7 +105,12 @@
       <Gvb_tabs/>
 
       <div class="gvb_container">
-        <router-view/>
+        <!-- 内容部分添加过渡 -->
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </div>
     </main>
   </div>
@@ -327,6 +332,16 @@ function handleLogout() {
       padding: 20px;
       overflow-y: auto;
       background-color: var(--bg);
+      /* 过渡动画样式 */
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: opacity 0.2s ease;
+      }
+
+      .fade-enter-from,
+      .fade-leave-to {
+        opacity: 0;
+      }
     }
   }
 }
